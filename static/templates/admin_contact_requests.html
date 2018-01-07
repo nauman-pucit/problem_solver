@@ -1,0 +1,171 @@
+<style>
+  body {
+    background-color: #3D3A4D;
+    min-height: 100%;
+    height: auto;
+  }
+</style>
+
+<div class="container" ng-controller="ModerateController as vm">
+
+  <div class="panel panel-default" style="margin-top: 150px">
+    <div class="row">
+      <div class="col-md-12 text-center"><br>
+        <span style="font-size: 40px"><b>Contact Requests</b></span>
+      </div>
+    </div>
+    <div class="panel-body">
+
+      <table class="table table-hover table-stripped">
+        <thead>
+        <tr class="text-primary" ng-if="vm.contact_responses.length != 0">
+          <th>Project Name</th>
+          <th>Project Offered By</th>
+          <th>Sent By</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-if="vm.contact_responses.length == 0">
+          <td class="text-center" style="width: 100%"><span style="font-size: 20px; color: #aaaaaa">YOU HAVE NO CONTACT REQUEST</span>
+          </td>
+        </tr>
+        <tr ng-repeat="response in vm.contact_responses">
+          <td>{{ response.question.project.project_name }}</td>
+          <td>
+            {{ response.question.project.resource.resource_user.first_name }} {{ response.question.project.resource.resource_user.last_name }}
+          </td>
+          <td>
+            {{ response.user.first_name }} {{ response.user.last_name }}
+          </td>
+          <td ng-if="response.status"> {{ response.status }}</td>
+          <td ng-if="!response.status"> Pending</td>
+          <td><a ng-if="!response.status || !vm.isAdmin" ng-click="vm.goToContactRequestDetail(response)"
+                 href="javascript:void(0)">View</a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div ng-if="!vm.isAdmin" class="panel panel-default" style="margin-top: 75px">
+    <div class="row">
+      <div class="col-md-12 text-center"><br>
+        <span style="font-size: 40px"><b>Solutions Hub Requests</b></span>
+      </div>
+    </div>
+    <div class="panel-body">
+      <table class="table table-hover table-stripped">
+        <thead>
+        <tr class="text-primary" ng-if="vm.lounge_area_requests.length != 0">
+          <th style="width: 15%">Name</th>
+          <th style="width: 40%">Description</th>
+          <th style="width: 10%">Created By</th>
+          <th style="width: 10%">Status</th>
+          <th style="width: 15%"></th>
+          <th style="width: 10%"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-if="vm.lounge_area_requests.length == 0">
+          <td class="text-center" style="width: 100%"><span style="font-size: 40px; color: #aaaaaa">YOU HAVE NO CONTACT REQUEST</span>
+          </td>
+        </tr>
+        <tr ng-if="request.status=='Pending'" ng-repeat="request in vm.lounge_area_requests" ng-init="limit=170">
+          <td style="width: 15%">{{ request.lounge_area.name }}</td>
+          <td ng-click="request.lounge_area.description.length > limit ? limit = limit+1000 : limit=170"
+              style="width: 40%; ">{{ request.lounge_area.description | limitTo:limit }}
+            <span class="text-primary"
+                  ng-if="request.lounge_area.description.length > limit">... continue</span></td>
+          <td style="width: 10%">
+            {{ request.lounge_area.created_by.first_name | uppercase }} {{ request.lounge_area.created_by.last_name | uppercase }}
+          </td>
+          <td style="width: 10%">
+            {{ request.status }}
+          </td>
+          <td style="width: 15%">
+            <button class="btn btn-success" ng-click="vm.acceptRequest(request)" href="javascript:void(0)">Join
+            </button>
+            <button class="btn btn-danger " ng-click="vm.rejectRequest(request)" href="javascript:void(0)">Reject
+            </button>
+          </td>
+          <td style="width: 10%"><a class="text-primary" ui-sref="loungeArea({loungeAreaId: request.lounge_area.id})">VIEW</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div modal="showModal" class="modal" id="contactRequestDetail">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" ng-click="close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div style="margin-right: 25px">
+            <i id="success_btn_field_of_work"
+               class="fa fa-check-square-o fa-2x pull-right text-success hide"
+               aria-hidden="true"></i>
+          </div>
+          <h4 class="modal-title text-primary" id="myModalLabel">Contact Request Details</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12 text-center text-primary">
+              <h3> {{ vm.projectDetail.question.project.project_name | uppercase}}</h3>
+            </div>
+          </div>
+          <div class="well">
+            <div class="row">
+              <div class="col-md-12">
+                <span
+                    class="text-primary"><b>Description: </b></span> {{ vm.projectDetail.question.project.project_description }}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <h4><span class="text-primary">Offered By</span></h4>
+              </div>
+            </div>
+
+            <div class="row" ng-if="!vm.contactResponse.question.project.resource.resource_user.anonymity">
+              <div class="col-md-4">
+                <span
+                    class="text-primary">Name:</span> {{ vm.projectDetail.question.project.resource.resource_user.first_name }} {{ vm.projectDetail.question.project.resource.resource_user.last_name }}
+              </div>
+            </div>
+          </div>
+
+          <h4 class="text-center text-primary">Contact Request
+            from {{ vm.projectDetail.user.first_name }} {{ vm.projectDetail.user.last_name }}</h4>
+
+          <div class="row" style="margin-left: 0px; margin-right: 0px" ng-repeat="response in vm.contactResponse track by $index">
+
+            <div class="col-md-12 well form-group alignRight">
+              <label><span class="text-primary">Q: </span>{{ response.question.question }}</label>
+              <!-- <textarea class="form-control" rows="3" ng-model="vm.answers[$index]" ng-if="vm.isAdmin">
+          {{ response.answer }}
+        </textarea> -->
+              <p>{{ response.answer }}</p>
+            </div>
+
+          </div>
+          <div class="row" ng-if="vm.isAdmin" style="margin-bottom: 5px">
+            <div class="col-md-4 col-md-offset-8">
+              <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="vm.submit('Rejected')">
+                Reject
+              </button>
+              <button type="button" class="btn btn-primary pull-right" ng-click="vm.submit('Approved')"
+                      data-dismiss="modal">Approve
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

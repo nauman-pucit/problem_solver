@@ -1,0 +1,13 @@
+<div class="container" ng-controller="FieldOfWorkController as vm">
+  <div class="row">
+    <div class="col-md-4">
+      <h4>Fields of Work:</h4>
+      <div ng-repeat="field_of_work in vm.fields_of_work_collection">
+        <div>
+          {{ field_of_work }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

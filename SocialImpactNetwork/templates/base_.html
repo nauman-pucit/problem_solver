@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="problem_solver_central">
+<head>
+  <meta charset="UTF-8">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>{% block title %}Social Network{% endblock %}</title>
+
+  {% load static %}
+  {% load socialaccount %}
+  {% providers_media_js %}
+
+  {# Scripts#}
+
+  <!-- Theme Scripts -->
+
+  <script src="{% static "vendors/jquery/dist/jquery.min.js" %}"></script>
+  <script src="{% static "vendors/tether/dist/js/tether.min.js" %}"></script>
+  <script src="{% static "vendors/bootstrap/dist/js/bootstrap.min.js" %}"></script>
+  <script src="{% static "vendors/typed.js/dist/typed.min.js" %}"></script>
+  <script src="{% static "vendors/three/build/three.min.js" %}"></script>
+  <script src="{% static "vendors/jquery.scrollTo/jquery.scrollTo.min.js" %}"></script>
+  <script src="{% static "common/js/common.js" %}"></script>
+  <!-- End Theme Scripts -->
+
+  <script src="{% static "js/jquery.maskedinput.js" %}"></script>
+  <script src="{% static "js/angular.min.js" %}"></script>
+  <script src="{% static "js/angular-animate.min.js" %}"></script>
+  <script src="{% static "js/angular-cookies.min.js" %}"></script>
+  <script src="{% static "js/angular-ui-router.js" %}"></script>
+  <script src="{% static "js/angular-ui-bootstrap-modal.js" %}"></script>
+  <script src="{% static "js/angular-ui-notification.min.js" %}"></script>
+  <script src="{% static "js/angularjs-dropdown-multiselect.js" %}"></script>
+
+  <script src="{% static "bower_components/angular-bootstrap-simple-chat/src/scripts/index.js" %}"></script>
+  <script src="{% static "bower_components/angular-validation/dist/angular-validation.js" %}"></script>
+  <script src="{% static "bower_components/angular-validation/dist/angular-validation-rule.js" %}"></script>
+
+  <script src="{% static "js/pledge_resources_tabs.js" %}"></script>
+  <script src="{% static "js/problem_solver_central.js" %}"></script>
+  <script src="{% static "js/jquery.easing.min.js" %}"></script>
+  <script src="{% static "js/authentication/authentication.module.js" %}"></script>
+  <script src="{% static "js/authentication/services/authentication.service.js" %}"></script>
+  <script src="{% static "js/authentication/controllers/sign_in.controller.js" %}"></script>
+  <script src="{% static "js/authentication/controllers/sign_up.controller.js" %}"></script>
+  <script src="{% static "js/authentication/controllers/users_list.controller.js" %}"></script>
+  <script src="{% static "js/authentication/controllers/user_profile_edit.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/social_impact_network.module.js" %}"></script>
+  <script src="{% static "js/authentication/controllers/navbar.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/directives/file_model.directive.js" %}"></script>
+  <script src="{% static "js/authentication/directives/file_model.directive.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/pledge_project.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/add_resources.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/add_skills.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/pledge_resources.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/pledge_network.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/pledge_contact.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/pledge_affiliation.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/pledge_field_of_work.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/moderate_contact_request.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/services/social_impact_network.service.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/home.controllers.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/search.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/project_detail.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/network_detail.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/lounge_area.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/controllers/skill_detail.controller.js" %}"></script>
+  <script src="{% static "js/social_impact_network/services/search.service.js" %}"></script>
+
+  <script src="{% static "js/angular-aria.min.js" %}"></script>
+  <script src="{% static "js/angular-material.min.js" %}"></script>
+  <script src="{% static "js/angular-messages.min.js" %}"></script>
+  <script src="{% static "js/reconnecting-websocket.min.js" %}"></script>
+  <script type='text/javascript' src="{% static 'js/loading-bar.min.js' %}"></script>
+  <script src="{% static "js/lodash.js" %}"></script>
+
+  {# css #}
+  <!-- Theme CSS -->
+{#  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700,900' rel='stylesheet' type='text/css'>#}
+{#    <link rel="stylesheet" type="text/css" href="{% static "vendors/bootstrap/dist/css/bootstrap.min.css" %}">#}
+
+  <link rel="stylesheet" type="text/css" href="{% static "common/css/source/main.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "common/css/source/blocks/showcase.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "admin-common/css/source/components/steps.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "admin-common/css/source/forms/basic-form-elements.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "admin-common/css/source/components/tabs.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "admin-common/css/source/helpers/base.default.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "admin-common/css/source/apps/profile.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "common/css/source/blocks/showcase.css" %}">
+  <link rel="stylesheet" type="text/css" href="{% static "common/css/source/vendors/typedjs.css" %}">
+  <!-- End Theme CSS -->
+
+  <link rel="stylesheet" type="text/css" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'vendor/magnific-popup/magnific-popup.css' %}"/>
+  {#  <link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}"/>#}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/fonts.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/fonts2.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/user_profile.css' %}"/>
+  {#  <link rel="stylesheet" type="text/css" href="{% static 'css/creative.min.css' %}"/>#}
+  <link rel="stylesheet" type="text/css"
+        href="{% static 'bower_components/angular-bootstrap-simple-chat/src/css/style.css' %}"/>
+  <link rel="stylesheet" type="text/css"
+        href="{% static 'bower_components/angular-bootstrap-simple-chat/src/css/themes.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/pledge_resources_tabs.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/angular-ui-notification.min.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/w3.css' %}"/>
+
+  <link rel="stylesheet" href="{% static 'css/loading-bar.min.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/angular-tabs.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/angular-material.min.css' %}"/>
+  {#  <link rel="stylesheet" type="text/css" href="{% static 'css/nav-styles.css' %}"/>#}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/rotating-card.css' %}"/>
+{#  <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}"/>#}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/gsdk.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/demo.css' %}"/>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+
+{% block nav %}
+  <outer ng-controller="NavbarController as vm">
+    <!--                 new navbar -->
+    <!-- Fixed navbar -->
+
+    <div id="navbar">
+
+      <nav class="navbar navbar-default navbar-fixed-top" role="navigation"
+           style="background-color: #0A0D24; border-color: #0A0D24">
+
+        <div class="container-fluid">
+
+          <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+
+              <span class="sr-only">Toggle navigation</span>
+
+              <span class="icon-bar"></span>
+
+              <span class="icon-bar"></span>
+
+              <span class="icon-bar"></span>
+
+            </button>
+
+            <a class="navbar-brand" ui-sref="home" data-target="#"
+               style='color: #ffffff; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif'>Problem Solver
+              Central</a>
+
+          </div>
+
+
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+            <ul class="nav navbar-nav navbar-right" >
+              <li ng-if="isAuthenticated && !isAdmin" class="dropdown">
+
+                <a  class="dropdown-toggle" data-toggle="dropdown"
+                   style='cursor:pointer; color: #ffffff;background-color: #0B0D24;
+                    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif'><b>Pledge</b> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+
+                <ul class="dropdown-menu">
+                  <li><a data-target="#" ui-sref="add_resources">Pledge Resources</a></li>
+                  <li class="divider"></li>
+                  <li><a data-target="#" ui-sref="add_skills">Pledge Skills</a></li>
+                </ul>
+
+              </li>
+              <li ng-if="isAuthenticated && !isAdmin"><a
+                  style='color: #ffffff; cursor: pointer; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif' ui-sref="search"
+                     data-target="#"><b>Search & View</b></a></li>
+
+              <li ng-if="isAuthenticated && !isAdmin"><a style='color: #ffffff; cursor:pointer; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif'
+                     data-target="#" ui-sref="all_user_pledges"><b>My Pledges</b></a></li>
+              <li ng-if="isAuthenticated && !isAdmin" class="dropdown">
+
+                <a  class="dropdown-toggle" data-toggle="dropdown"
+                   style='cursor:pointer; color: #ffffff;background-color: #0B0D24;
+                    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif'><b>Solutions Hub</b> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+
+                <ul class="dropdown-menu">
+                  <li><a data-target="#" ui-sref="loungeArea({loungeAreaId: 1})">View Solutions Hub</a></li>
+                  <li class="divider"></li>
+                  <li><a data-target="#" ui-sref="create_solutions_hub">Create Solutions Hub</a></li>
+                </ul>
+
+              </li>
+              <li ng-if="isAuthenticated && !isAdmin"><a style='color: #ffffff; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif'
+                     data-target="#" ui-sref="moderate_contact_requests"><b>Requests</b></a></li>
+
+              <li ng-if="isAuthenticated && isAdmin"><a style='color: #ffffff; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif'
+                     data-target="#" ui-sref="user_list"><b>Manage Users</b></a></li>
+
+              <li ng-if="isAuthenticated && isAdmin"><a style='color: #ffffff; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif'
+                     data-target="#" ui-sref="moderate_contact_requests"><b>Moderate Requests</b></a></li>
+
+              <li ng-if="isAuthenticated" class="dropdown">
+
+                <a class="dropdown-toggle " data-toggle="dropdown"
+                   style='cursor: pointer;color: #ffffff; background-color: #0B0D24;
+                    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif'>
+                  <b>{{ full_name }}</b> <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+
+                <ul class="dropdown-menu">
+
+                  <li><a data-target="#" ui-sref="user_profile">Profile</a></li>
+                  <li><a data-target="#" ui-sref="edit_user_profile">Edit Profile</a></li>
+
+                  <li class="divider"></li>
+
+                  <li><a data-target="#" style="cursor: pointer" ng-click="vm.logout()" >Log Out</a></li>
+
+                </ul>
+
+              </li>
+              <li ng-if="!isAuthenticated"><a style='color: #ffffff; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif' data-target="#" >
+                <b>Sign Up</b></a>
+              </li>
+              <li ng-if="!isAuthenticated"><a style='color: #ffffff; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif' data-target="#"  ui-sref="sign_in"><b>Sign In</b></a></li>
+            </ul>
+
+          </div><!-- /.navbar-collapse -->
+
+        </div><!-- /.container-fluid -->
+
+      </nav>
+
+    </div><!--  end navbar -->
+
+    {#    <div class="cwt__block cwt__header-fixed" style="line-height: 2.5 !important;font-weight: 700;#}
+    {#     font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif">#}
+    {#      <div class="container">#}
+    {#        <div class="cwt__header-fixed__container">#}
+    {#          <div class="row">#}
+    {#            <div class="col-xs-3" >#}
+    {#              <div class="cwt__logo cwt__logo--small">#}
+    {#                <a ui-sref="home" data-target="#" class="nav-links" >#}
+    {#                  <h4 style=" width: 300px;"><b style=" font-family: Verdana,sans-serif;">#}
+    {#                    Problem Solver Central</b></h4>#}
+    {#                </a>#}
+    {#              </div>#}
+    {#            </div>#}
+    {#            <div class="col-xs-9">#}
+    {#              <nav class="nav nav-inline pull-xs-right cwt__main-menu cwt__main-menu--dark">#}
+    {#                <div class="cwt__mobile-menu">#}
+    {##}
+    {#                  <ul id="nav_links" class="nav navbar-nav navbar-right" style="display: -webkit-box;">#}
+    {#                    <li ng-if="isAuthenticated && !isAdmin" class="dropdown text-center" style="margin-right: 3%">#}
+    {#                      <a class="dropdown-toggle nav-links" data-toggle="dropdown" role="button"#}
+    {#                         aria-haspopup="true" aria-expanded="false">#}
+    {#                        Pledge<span class="caret"></span></a>#}
+    {#                      <ul class="dropdown-menu" style="width: 170px">#}
+    {#                        <li>#}
+    {#                          <a style="cursor: pointer;" class="nav-links-dropdown"#}
+    {#                             data-target="#"><span >Pledge Resources</span></a>#}
+    {#                        </li>#}
+    {#                        <li role="separator" class="divider"></li>#}
+    {#                        <li>#}
+    {#                          <a style="cursor: pointer;" class="nav-links-dropdown"#}
+    {#                             data-target="#">Pledge Skills</a>#}
+    {#                        </li>#}
+    {#                      </ul>#}
+    {#                    </li>#}
+    {#                    <li ng-if="!isAdmin && isAuthenticated" style="margin-right: 3%">#}
+    {#                      <a class="page-scroll nav-links" style="cursor: pointer" data-target="#">Search & View</a>#}
+    {#                    </li>#}
+    {#                    <li ng-if="!isAdmin && isAuthenticated" style="margin-right: 3%">#}
+    {#                      <a  data-target="#" style="cursor: pointer;" class="nav-links">#}
+    {#                        My Pledges</a>#}
+    {#                    </li>#}
+    {##}
+    {#                    <li ng-if="isAuthenticated && !isAdmin" class="dropdown" style="margin-right: 3%">#}
+    {#                      <a class="dropdown-toggle nav-links" data-toggle="dropdown" role="button"#}
+    {#                         aria-haspopup="true" aria-expanded="false">#}
+    {#                         Solutions Hub<span class="caret"></span></a>#}
+    {#                      <ul class="dropdown-menu" style="width: 200px">#}
+    {#                        <li>#}
+    {#                          <a style="cursor: pointer;" class="nav-links-dropdown"#}
+    {#                              data-target="#">View Solutions Hub</a>#}
+    {#                        </li>#}
+    {#                        <li role="separator" class="divider"></li>#}
+    {#                        <li>#}
+    {#                          <a style="cursor: pointer;" class="nav-links-dropdown"#}
+    {#                             data-target="#">Create Solutions Hub</a>#}
+    {#                        </li>#}
+    {#                      </ul>#}
+    {#                    </li>#}
+    {#                    <li ng-if="!isAdmin && isAuthenticated" style="margin-right: 3%" >#}
+    {#                      <a  data-target="#" style="cursor: pointer" class="nav-links">Requests</a>#}
+    {#                    </li>#}
+    {#                    <li ng-if="isAdmin && isAuthenticated" style="margin-right: 3%">#}
+    {#                      <a data-target="#" style="cursor: pointer;" class="nav-links">Manage Users</a>#}
+    {#                    </li>#}
+    {#                    <li ng-if="isAdmin && isAuthenticated" style="margin-right: 3%">#}
+    {#                      <a  data-target="#" style="cursor: pointer;" class="nav-links">Moderate#}
+    {#                        Requests</a>#}
+    {#                    </li>#}
+    {##}
+    {#                    <li ng-if="isAuthenticated" class="dropdown" style="margin-right: 3%">#}
+    {#                      <a class="dropdown-toggle nav-links" data-toggle="dropdown" role="button"#}
+    {#                         aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i>#}
+    {#                        {{ full_name }}#}
+    {#                        <span class="caret"></span></a>#}
+    {#                      <ul class="dropdown-menu">#}
+    {#                        <li>#}
+    {#                          <a style="cursor: pointer;" class="nav-links-dropdown"#}
+    {#                              data-target="#">Profile</a>#}
+    {#                        </li>#}
+    {#                        <li>#}
+    {#                          <a style="cursor: pointer;" class="nav-links-dropdown"#}
+    {#                              data-target="#">Edit Profile</a>#}
+    {#                        </li>#}
+    {#                        <li role="separator" class="divider"></li>#}
+    {#                        <li id="logout_id">#}
+    {#                          <a data-target="#" ng-click="vm.logout()" class="nav-links-dropdown"#}
+    {#                             style="cursor: pointer;">Logout</a>#}
+    {#                        </li>#}
+    {#                      </ul>#}
+    {#                    </li>#}
+    {#                    <li ng-if="!isAuthenticated" style="margin-right: 18%">#}
+    {#                      <a style="cursor: pointer;" class="nav-links"#}
+    {#                         ui-sref="sign_in" data-target="#">Sign In</a>#}
+    {#                    </li>#}
+    {#                    <li ng-if="!isAuthenticated"  style="margin-right: 6%">#}
+    {#                      <a style="cursor: pointer;" class="nav-links"  data-target="#">Sign Up</a>#}
+    {#                    </li>#}
+    {##}
+    {#                  </ul>#}
+    {#                </div>#}
+    {##}
+    {#              </nav>#}
+    {#            </div>#}
+    {#          </div>#}
+    {#        </div>#}
+    {#      </div>#}
+    {#    </div>#}
+
+    <div class="modal fade" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="modal-title">Sign Up</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-5 text-center">
+                <div class="service-box">
+                  <i style="cursor: pointer" ui-sref="sign_up({user_type: 'be_a_support'})"
+                     class="fa fa-5x fa-life-ring text-primary" aria-hidden="true" data-toggle="modal"
+                     data-target="#myModal"></i>
+                  <hr class="primary">
+                  <h3>Be a Support</h3>
+                </div>
+              </div>
+              <div class="col-md-5 text-center">
+                <div class="service-box">
+                  <i style="cursor: pointer" ui-sref="sign_up({user_type: 'look_for_support'})"
+                     class="fa fa-5x fa-search text-primary" aria-hidden="true" data-toggle="modal"
+                     data-target="#myModal"></i>
+                  <hr class="primary">
+                  <h3>Look for Support</h3>
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <a href="#" data-dismiss="modal" class="btn">Close</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div modal="vm.sign_in_model" class="modal fade bd-example-modal-sm" id="sign_in_model" tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <form ng-controller="logInController" name="signinForm" ng-submit="submit()" method="post">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">Sign In</h4>
+            </div>
+
+            <div class="modal-body">
+              <div>
+                <div class="form-group">
+                  <label for="emailaddress">Email Address</label>
+                  <input type="email" ng-model="user_name" class="form-control" id="user_name"
+                         placeholder="Email...">
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" ng-model="password" class="form-control" id="password"
+                         placeholder="Password...">
+                </div>
+                <div ng-show="login_error" class="text-danger small">wrong email or password</div>
+                <div style="margin-left: 10px" class="row">
+                  <h4> Sign In with:</h4>
+                </div>
+                <div class="form-group form-inline">
+                  <button style="background-color: #3b5998" type="button"
+                          class="btn btn-primary disabled"><i class="fa fa-facebook-official"
+                                                              aria-hidden="true"></i>Facebook
+                  </button>
+                  <button type="button" style="background-color: #427EEC"
+                          class="btn btn-danger disabled"><i class="fa fa-google"
+                                                             aria-hidden="true"></i>oogle {# G comes from icon #}
+                  </button>
+                  <button type="button" style="background-color: #0077B5"
+                          class="btn btn-info disabled"><i class="fa fa-linkedin-square"
+                                                           aria-hidden="true"></i>LinkedIn
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" ng-click="vm.close_sign_in_model()"
+                      data-dismiss="modal">Close
+              </button>
+              <input type="submit" value="Sign In" class="btn btn-primary" id="submit">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </outer>
+{% endblock %}
+
+<body>
+<ui-view></ui-view>
+</body>
+</html>

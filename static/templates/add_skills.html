@@ -1,0 +1,208 @@
+<style>
+  body {
+    background-color: #3D3A4D;
+    min-height: 100%;
+    height: auto;
+  }
+
+  .multiselect-parent .dropdown-toggle {
+    width: 384px;
+  }
+
+  .multiselect-parent .dropdown-menu {
+    width: 400px;
+  }
+</style>
+
+<script src="/static/js/creative.min.js"></script>
+<div class="container" ng-controller="AddSkillController as vm">
+
+  <div class="panel panel-default" style="margin-top: 150px">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <span style="font-size: 40px"><b>Pledge Skills</b></span>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 20px;margin-bottom: 20px">
+      <div class="col-xs-8 col-xs-offset-2">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="col-md-12"><h5 class="text-primary"><i class="fa fa-globe" aria-hidden="true"></i> Geographical
+              area</h5></div>
+
+            <div class="form-group form-inline">
+              <div class="col-md-5">
+                <label for="country">Country*</label>
+              </div>
+              <div class="col-md-7">
+                <div class="pull-left" events="get_cities" id="country" ng-dropdown-multiselect=""
+                     options="country_data"
+                     selected-model="country_model"
+                     extra-settings="country_settings" translation-texts="country_settings_text"></div>
+              </div>
+              <br><br>
+            </div>
+            <br>
+            <div class="form-group" ng-hide="cities_drop_down">
+              <div class="col-md-5">
+                <label for="city">City*</label>
+              </div>
+              <div class="col-md-7">
+                <div class="pull-left" events="cities_event" id="city" ng-dropdown-multiselect="" options="city_data"
+                     selected-model="city_model"
+                     extra-settings="city_settings" translation-texts="city_settings_text"></div>
+              </div>
+
+
+            </div>
+            <br><br>
+          </div>
+        </div>
+        <form name="skill_form" ng-submit="add_skill()" method="post" novalidate enctype="multipart/form-data">
+          <div class="" ng-repeat="skill in skills"
+               style="border-color:rgba(255, 255, 255, 0.4); border: 5px solid #dfe4ed; border-radius: 25px;
+               margin-top: 20px;">
+            <div class="row">
+              <div class="col-md-12"><br>
+                <div class="well" style="border-color:rgba(255, 255, 255, 0.4);
+                     border: 2px solid #dfe4ed; border-radius: 15px; margin: 15px">
+                  <div class="form-group form-inline " style="padding-left: 15px;padding-right: 15px;border: 0;"
+                       data-ng-repeat="orgnaization in skill.orgnaizations"><br>
+                    <div class="col-md-5">
+                      <label for="organization">Organization</label>
+                    </div>
+                    <div class="col-md-7">
+                      <input style="width: 92%" class="form-control organization" type="text"
+                             ng-model="orgnaization.name" name=""
+                             placeholder="Organization name">
+                      <button class="remove btn-danger" ng-show="$last"
+                              ng-click="removeOrgnaization(skill)">x
+                      </button>
+                    </div>
+                    <br>
+                  </div>
+
+                  <div class="col-md-12">
+                    <a style="cursor:pointer;" class="addOrgnaizations text-primary pull-right"
+                       ng-click="addNewOrgnaization(skill)">Add organization</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row well" style="border-color:rgba(255, 255, 255, 0.4);
+                     border: 2px solid #dfe4ed; border-radius: 15px;margin: 15px">
+              <div class="col-md-12">
+
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="skill_name">Skill name*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input type="text" class="form-control" id="skill_name"
+                           ng-model="skill.skill_name" placeholder="Skill name..." required>
+                  </div>
+                </div>
+                <br><br>
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="skill_description">Description*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <textarea rows="4" type="text" class="form-control" id="skill_description"
+                              ng-model="skill.skill_description" placeholder="Description..." required></textarea>
+                  </div>
+                </div>
+                <br><br>
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="skill_level">Skill Level*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input type="radio" id="skill_level" name="{{ skill.id }}" value="beginner"
+                           ng-model="skill.skill_level"> Beginner
+                    <input type="radio" id="skill_level" name="{{ skill.id }}" value="experienced"
+                           ng-model="skill.skill_level"> Experienced
+                    <input type="radio" id="skill_level" name="{{ skill.id }}" value="expert"
+                           ng-model="skill.skill_level"> Expert
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="row well" style="border-color:rgba(255, 255, 255, 0.4);
+                     border: 2px solid #dfe4ed; border-radius: 15px;margin: 15px">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="contact_name">Contact person name*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input type="text" class="form-control" id="contact_name"
+                           ng-model="skill.contact_name" placeholder="Contact person name..." required>
+                  </div>
+                </div>
+                <br><br>
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="contact_person_email">Email*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input type="email" class="form-control" id="contact_person_email"
+                           ng-model="skill.contact_email" placeholder="Contact person email..." required>
+                    <span class="small text-info">Your email address will not be made public</span>
+                  </div>
+                </div>
+                <br><br>
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="contact_description">About Me*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <textarea rows="4" type="text" class="form-control" id="contact_description"
+                              ng-model="skill.contact_description" placeholder="Description..." required></textarea>
+                    <input file-model="skill.image" type="file" name="img">
+                    <!--<input type="file" file-upload multiple/>-->
+                  </div>
+                </div>
+                <div class="form-group form-inline">
+                  <div class="col-md-5">
+                    <label for="anonymity">Anonymity</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input style="margin-left: 14px" type="checkbox" id="anonymity"
+                           ng-model="skill.contact_anonymity">
+                    <span class="small text-info">
+                      Tick if you want to remain anonymous and would like us to moderate messages before sending to you
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div ng-show="$last" class="row">
+              <button ng-hide="$first" class="remove btn btn-default pull-right" ng-click="removeSkill(skill)"
+                      style="margin: 20px">close
+              </button>
+              <input type="button" class="btn btn-info pull-right" value="Pledge More Skills" style="margin: 20px"
+                     ng-click="add_skill_form(skill);"><br>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 20px">
+            <div class="col-md-12 text-center">
+              <input type="submit" value="Save Skills" class="btn btn-primary align-center" id="submit"
+                     style="width: 30%">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(function () {
+
+    $('body').addClass('single-page single-page-inverse');
+
+  });
+</script>

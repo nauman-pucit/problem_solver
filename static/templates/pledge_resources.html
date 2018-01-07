@@ -1,0 +1,953 @@
+<style>
+  body {
+    background-color: #3D3A4D;
+    min-height: 100%;
+    height: auto;
+  }
+
+  .multiselect-parent .dropdown-toggle {
+    width: 565px;
+  }
+
+  .multiselect-parent .dropdown-menu {
+    width: 565px;
+  }
+
+  .active {
+    background-color: #F05F40;
+  }
+
+</style>
+<script>
+  window.onresize = function (event) {
+    x = $(window).width();
+    platform = navigator.platform;
+    var resource_count = parseInt($("#projects_count").val()) + parseInt($("#networks_count").val());
+    var skill_count = parseInt($("#skills_count").val());
+    var max_value = 0;
+      if (resource_count > skill_count){max_value = resource_count}else {max_value = skill_count}
+    if  (x < 1000) {
+
+      $("#content").css("min-height", max_value*350);
+    } else {
+      if (max_value > 6){
+        max_value = Math.ceil(max_value / 3);
+        $("#content").css("min-height", max_value*350);
+      }else {
+        $("#content").css("min-height", 900);
+      }
+
+    }
+  };
+
+</script>
+
+<div ng-controller="my_pledges_controller as vm">
+  <input id="projects_count" type="hidden" value="{{ vm.all_user_category_projects.length }}">
+  <input id="networks_count" type="hidden" value="{{ vm.all_user_category_networks.length }}">
+  <input id="skills_count" type="hidden" value="{{ vm.all_user_skills.length }}">
+  <div class="container">
+    <div class="row" style="margin-top: 130px">
+      <div class="col-lg-11 col-md-11 col-sm-8 col-xs-9 bhoechie-tab-container">
+        <div class="sample" layout="column" ng-cloak>
+          <md-content class="md-padding">
+            <md-tabs md-selected="selectedIndex" id="content" style="min-height: 900px;" md-border-bottom md-autoselect>
+              <md-tab style="" ng-repeat="tab in tabs"
+                      ng-disabled="tab.disabled"
+                      label="{{ tab.title }}">
+                <div>
+                  <div ng-if="tab.title == 'Resources'" ><br>
+                    <div class="form-group form-inline">
+                      <button class="btn btn-primary pull-right" ui-sref="add_resources"
+                              data-target="#" style="margin-left: 20px">Pledge New
+                        Resource
+                      </button>
+
+                      <select name="categories" class="form-control pull-right"
+                              ng-options="category as category.category_name | uppercase for category in vm.all_user_categories"
+                              ng-model="selectedItem" ng-change="vm.switch_tab(selectedItem)" style="width: 15%">
+                      </select>
+                      <label class=" pull-right" style="padding: 10px" for="categories">Categories: </label>
+                    </div>
+
+                    <div class="">
+                      <!-- flight section -->
+                      <h3><b>Projects</b></h3>
+                      <div class="text-center" ng-if="vm.loading">
+                        <i class="fa fa-5x fa-spinner text-primary w3-spin" aria-hidden="true"
+                           style="margin-top: 100px"></i>
+                      </div>
+                      <div class="">
+                        <div ng-if="!vm.loading" class="col-md-4" ng-repeat="project in vm.all_user_category_projects"
+                             style="padding: 20px">
+                          <div class="step-block step-primary"><span class="step-digit"><i class="fa fa-5x fa-cubes"
+                                                                                           aria-hidden="true"></i></span>
+                            <div class="step-desc">
+                              <span class="step-title">{{ project.project_name }}</span>
+                              <hr>
+                              <span
+                                  ng-repeat="category in project.resource.resource_category">{{ category.category_name | uppercase | limitTo:15 }}
+                                <tag class="text-primary" ng-hide="$last"> | </tag>
+                              </span><br><br>
+                              <p class=" small">{{ project.project_description | limitTo:100 }}
+                                <span ng-if="project.project_description.length > 100">
+                              ...
+                            </span>
+                              </p>
+                              <div class="col-md-12 " style="position:absolute; bottom: 40px;">
+                                <div class="col-md-10">
+                                  <button class="w3-btn w3-white w3-border w3-border-blue w3-round-large w3-hover-blue"
+                                          ui-sref="projectDetail({projectId: project.id})"
+                                          style=""><b>Details</b></button>
+
+                                  <button class="w3-btn w3-white w3-border w3-border-blue w3-round-large w3-hover-blue"
+                                          ng-click="vm.showModalEditProject(project)"
+                                          style=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                  <button class="w3-btn w3-white w3-border w3-border-blue w3-round-large w3-hover-blue"
+                                          ng-click="vm.showDeleteProjectModal(project)"
+                                          style=""><i class="fa fa-times" aria-hidden="true"></i>
+                                  </button>
+                                </div>
+                                <div class="col-md-2">
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h3><b>Networks</b></h3>
+                          <div class="text-center" ng-if="vm.loading">
+                            <i class="fa fa-5x fa-spinner text-primary w3-spin" aria-hidden="true"
+                               style="margin-top: 100px"></i>
+                          </div>
+                          <div class="">
+                            <div ng-if="!vm.loading" class="col-md-4"
+                                 ng-repeat="network in vm.all_user_category_networks"
+                                 style="padding: 20px">
+                              <div class="step-block step-primary">
+                            <span class="step-digit">
+                              <i class="fa fa-5x fa-users" aria-hidden="true"></i>
+                            </span>
+                                <div class="step-desc">
+                                  <span class="step-title">{{ network.network_name | uppercase | limitTo:15 }}</span>
+                                  <hr>
+                                  <span ng-repeat="category in network.resource.resource_category">
+                          {{ category.category_name | uppercase }}
+                            <tag class="text-primary" ng-hide="$last"> | </tag></span><br><br>
+                                  <p class=" small">{{ network.network_description | limitTo:100 }}
+                                    <span ng-if="network.network_description.length > 100">
+                              ...
+                          </span>
+                                  </p>
+                                  <div class="col-md-12 " style="position:absolute; bottom: 40px;">
+                                    <div class="col-md-10">
+                                      <button
+                                          class="w3-btn w3-white w3-border w3-border-blue w3-round-large w3-hover-blue"
+                                          ui-sref="networkDetail({networkId: network.id})"
+                                          style=""><b>Details</b></button>
+
+                                      <button
+                                          class="w3-btn w3-white w3-border w3-border-blue w3-round-large w3-hover-blue"
+                                          ng-click="vm.showModalEditNetwork(network)"
+                                          style=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                      <button
+                                          class="w3-btn w3-white w3-border w3-border-blue w3-round-large w3-hover-blue"
+                                          ng-click="vm.showDeleteNetworkModal(network)"
+                                          style=""><i class="fa fa-times" aria-hidden="true"></i>
+                                      </button>
+                                    </div>
+                                    <div class="col-md-2">
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div ng-if="tab.title == 'Skills'"><br>
+                    <div class="form-group form-inline">
+                      <button class="btn btn-primary pull-right" ui-sref="add_skills" data-target="#">Pledge New Skill
+                      </button>
+                    </div>
+
+                    <div class="">
+                      <!-- flight section -->
+                      <h3><b>Skills</b></h3>
+                      <div class="text-center" ng-if="vm.loading">
+                        <i class="fa fa-5x fa-spinner text-primary w3-spin" aria-hidden="true"
+                           style="margin-top: 100px"></i>
+                      </div>
+                      <div class="">
+                        <div ng-if="!vm.loading" class="col-md-4" ng-repeat="skill in vm.all_user_skills"
+                             style="padding: 20px">
+                          <div class="step-block step-primary">
+                            <span class="step-digit"><i class="fa fa-5x fa-cubes" aria-hidden="true"></i></span>
+                            <div class="step-desc">
+                              <span class="step-title">{{ skill.skill_name }}</span>
+                              <hr>
+                              <span style="color: #dddddd">{{ skill.skill_level | uppercase }}</span><br><br>
+                              <p class=" small">{{ skill.skill_description | limitTo:100 }}
+                                <span ng-if="skill.skill_description.length > 100">...</span>
+                              </p>
+                              <div class="col-md-12 " style="position:absolute; bottom: 40px;">
+                                <div class="col-md-10">
+                                  <button
+                                      class="w3-btn w3-white w3-border w3-border-blue w3-round-large w3-hover-blue"
+                                      ui-sref="skillDetail({skillId: skill.id})"
+                                      style=""><b>Details</b></button>
+                                  <button
+                                      class="w3-btn w3-white w3-border w3-border-blue w3-round-large w3-hover-blue"
+                                      ng-click="vm.showModalEditSkill(skill)"
+                                      style=""><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                                  <button
+                                      class="w3-btn w3-white w3-border w3-border-blue w3-round-large w3-hover-blue"
+                                      ng-click="vm.showDeleteSkillModal(skill)"
+                                      style=""><i class="fa fa-times" aria-hidden="true"></i>
+                                  </button>
+                                </div>
+                                <div class="col-md-2">
+
+                                </div>
+
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </div>
+
+                </div>
+              </md-tab>
+            </md-tabs>
+          </md-content>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+
+    <div modal="vm.ModalEditSkill" class="modal fade bd-edit-skill-modal-sm" id="edit_skill_model"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <form name="resource_form" ng-submit="edit_skill()" method="post" novalidate>
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"
+                      ng-click="vm.closeModalEditSkill()"
+                      aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">Edit Skill</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="network_name">Skill Name*</label>
+                    <input type="text" class="form-control" id="skill_name"
+                           ng-model="skill_name" placeholder="Skill name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="skill_description">Description*</label>
+                    <textarea rows="4" type="text" class="form-control" id="skill_description"
+                              ng-model="skill_description" placeholder="Description..."
+                              required></textarea>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="skill_level">Skill Level*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input type="radio" id="skill_level" name="{{ skill.id }}" value="beginner"
+                           ng-model="skill_level"> Beginner
+                    <input type="radio" id="skill_level" name="{{ skill.id }}" value="experienced"
+                           ng-model="skill_level"> Experienced
+                    <input type="radio" id="skill_level" name="{{ skill.id }}" value="expert"
+                           ng-model="skill_level"> Expert
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <h5 class="text-primary">Geographical area</h5>
+
+                  <div class="form-group form-inline">
+                    <label for="country">Country*</label>
+                    <div events="skill_get_cities" id="country" ng-dropdown-multiselect=""
+                         options="skill_country_data"
+                         selected-model="skill_country_model"
+                         extra-settings="skill_country_settings"
+                         translation-texts="skill_country_settings_text"></div>
+                  </div>
+                  <div class="form-group" ng-hide="cities_drop_down">
+                    <label for="city">City*</label>
+                    <div events="skill_cities_event" id="city" ng-dropdown-multiselect=""
+                         options="skill_city_data"
+                         selected-model="skill_city_model"
+                         extra-settings="skill_city_settings"
+                         translation-texts="skill_city_settings_text"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_name">Contact person name*</label>
+                    <input type="text" class="form-control" id="contact_name"
+                           ng-model="skill_contact_name" placeholder="Contact person name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_person_email">Email*</label>
+                    <input type="email" class="form-control" id="contact_person_email"
+                           ng-model="skill_contact_email" placeholder="Contact person email..." required>
+                    <span class="small text-info">your email address will not be made public</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_description">About Me*</label>
+                    <textarea type="text" class="form-control" id="contact_description"
+                              ng-model="skill_contact_description" placeholder="Description..."
+                              required></textarea>
+                  </div>
+                  <div class="form-group form-inline">
+                    <label for="anonymity">Anonymity</label>
+                    <input style="margin-left: 14px" type="checkbox" id="anonymity"
+                           ng-model="skill_contact_anonymity"><br>
+                    <span class="small text-info">
+                      tick if you want to remain anonymous and would like us to moderate messages before sending to you
+                    </span>
+                  </div>
+                  <fieldset style="border: 0" class="form-group form-inline"
+                            data-ng-repeat="orgnaization in skill_orgnaizations">
+                    <label for="organization">Organization</label>
+                    <input class="form-control organization" type="text"
+                           ng-model="orgnaization.name" name=""
+                           placeholder="Enter Organization Name">
+                    <button class="remove btn-danger"
+                            ng-click="skill_removeEditOrgnaization(orgnaization)">-
+                    </button>
+                  </fieldset>
+
+
+                  <a style="cursor:pointer;" class="addOrgnaizations text-primary pull-right"
+                     ng-click="skillAddNewEditOrgnaization()">Add organization</a>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" ng-click="vm.closeModalEditSkill()">
+                Close
+              </button>
+              <input type="submit" value="Update Skill" class="btn btn-primary" id="submit">
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+    <div modal="vm.confirmDeleteSkillModal" class="modal fade" id="confirmDeleteSkillModal"
+         role="dialog">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" ng-click="vm.closeDeleteSkillModal()">&times;</button>
+            <h4 class="modal-title">Delete Skill</h4>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete skill?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="vm.closeDeleteSkillModal()">
+              Cancel
+            </button>
+            <button type="button" class="btn btn-danger" ng-click="deleteSkill()"
+                    data-dismiss="modal">Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade bd-add-project-modal-sm" id="add_project_model" tabindex="-1" role="dialog"
+         aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <form name="resource_form" ng-submit="add_resource()" method="post" novalidate>
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="text-success pull-right" id="project_add_success"
+                   style="margin-right: 25px">{{ project_add_success }}</div>
+
+              <h4 class="modal-title" id="myModalLabel">Add Resource</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="category">Category*</label>
+                    <div id="category" ng-dropdown-multiselect="" options="categorydata"
+                         selected-model="categorymodel"
+                         extra-settings="categorysettings"></div>
+                  </div>
+                  <h5 class="text-primary">Geographical area</h5>
+
+                  <div class="form-group form-inline">
+                    <label for="country">Country*</label>
+                    <div events="get_cities" id="country" ng-dropdown-multiselect="" options="country_data"
+                         selected-model="country_model"
+                         extra-settings="country_city_settings"></div>
+                  </div>
+                  <div class="form-group" ng-hide="cities_drop_down">
+                    <label for="city">City*</label>
+                    <div events="cities_event" id="city" ng-dropdown-multiselect="" options="city_data"
+                         selected-model="city_model"
+                         extra-settings="country_city_settings"></div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="resource_type">Resource type*</label>
+                    <select ng-change="vm.change_form()" ng-model="vm.resource_type" class="form-control"
+                            id="resource_type">
+                      <option class="form-control"
+                              ng-repeat="resource in vm.all_resource_types">{{ resource.resource_type }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" ng-show="project_form">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="project_name">Project name*</label>
+                    <input type="text" class="form-control" id="project_name"
+                           ng-model="project_name" placeholder="Project name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="project_description">Description*</label>
+                    <textarea rows="4" type="text" class="form-control" id="project_description"
+                              ng-model="project_description" placeholder="Description..." required> </textarea>
+                  </div>
+                  <div id="">
+                    <h3 class="text-center">Contact Form Questions</h3>
+                    <div class="form-group form-inline">
+                      <label for="duplicate_questions">Duplicate Questions</label>
+                      <input ng-model="duplicate_questions" type="checkbox" ng-click="get_questions()">
+                    </div>
+                    <span
+                        class="text-info small">Add questions that you want to ask the person who will contact you</span>
+                    <fieldset style="border: 0" id="parent_contact_questions"
+                              class="form-group form-inline"
+                              data-ng-repeat="question in questions">
+                      <label for="question">Question</label>
+                      <input class="form-control question" type="text"
+                             ng-model="question.name" name=""
+                             placeholder="Enter question">
+                      <button class="remove btn-danger" ng-show="$last"
+                              ng-click="removeQuestion()">-
+                      </button>
+                    </fieldset>
+                  </div>
+
+                  <a style="cursor: pointer" class="addfields text-primary pull-right"
+                     ng-click="addNewQuestion()">Add Question</a>
+                </div>
+              </div>
+
+              <div class="row" ng-show="network_form">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="network_name">Network name*</label>
+                    <input type="text" class="form-control" id="network_name"
+                           ng-model="network_name" placeholder="Network name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="network_description">Description*</label>
+                    <textarea rows="4" type="text" class="form-control" id="network_description"
+                              ng-model="network_description" placeholder="Description..." required></textarea>
+                  </div>
+                  <div class="hidden">
+                    <fieldset style="border: 0" id="parent_fields_of_work" class="form-group form-inline"
+                              data-ng-repeat="field in fields">
+                      <label for="field_of_work">Field of work</label>
+                      <input class="form-control field_of_work" type="text"
+                             ng-model="field.name" name="" placeholder="Fields of work">
+                      <button class="remove btn-danger" ng-show="$last"
+                              ng-click="removeField()">-
+                      </button>
+                    </fieldset>
+                  </div>
+
+                  <a style="cursor:pointer;" class="hidden addfields text-primary pull-right"
+                     ng-click="addNewField()">Add fields of work</a>
+
+                </div>
+              </div>
+
+              <div class="row" ng-show="contact_form">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="contact_name">Contact name*</label>
+                    <input type="text" class="form-control" id="contact_name"
+                           ng-model="contact_name" placeholder="Contact name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_description">Description*</label>
+                    <input type="text" class="form-control" id="contact_description"
+                           ng-model="contact_description" placeholder="Description..." required>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="contact_name">Contact person name*</label>
+                    <input type="text" class="form-control" id="contact_name"
+                           ng-model="contact_name" placeholder="Contact person name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_person_email">Email*</label>
+                    <input type="email" class="form-control" id="contact_person_email"
+                           ng-model="contact_email" placeholder="Contact person email..." required>
+                    <span class="small text-info">your email address will not be made public</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_description">About Me*</label>
+                    <textarea type="text" class="form-control" id="contact_description"
+                              ng-model="contact_description" placeholder="Description..." required></textarea>
+                  </div>
+                  <div class="form-group form-inline">
+                    <label for="anonymity">Anonymity</label>
+                    <input style="margin-left: 14px" type="checkbox" id="anonymity" ng-model="contact_anonymity"><br>
+                    <span class="small text-info">
+                      tick if you want to remain anonymous and would like us to moderate messages before sending to you
+                    </span>
+                  </div>
+                  <fieldset style="border: 0" class="form-group form-inline"
+                            data-ng-repeat="orgnaization in orgnaizations">
+                    <label for="organization">Organization</label>
+                    <input class="form-control organization" type="text"
+                           ng-model="orgnaization.name" name=""
+                           placeholder="Organization name">
+                    <button class="remove btn-danger" ng-show="$last"
+                            ng-click="removeOrgnaization()">x
+                    </button>
+                  </fieldset>
+                  <a style="cursor:pointer;" class="addOrgnaizations text-primary pull-right"
+                     ng-click="addNewOrgnaization()">Add organization</a>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <input type="submit" value="Save Resource" class="btn btn-primary" id="submit">
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <div modal="vm.showModal" class="modal" id="field_of_work_model">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="vm.closeModel()" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Fields of Work</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-4">
+                <h4>Fields of Work:</h4>
+                <div ng-repeat="field_of_work in vm.fields_of_work_collection">
+                  <div>
+                    {{ field_of_work.field_name }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" ng-click="vm.closeModel()" data-dismiss="modal">Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div modal="vm.showModalAffiliation" class="modal" id="affiliation_model">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" ng-click="vm.close()"
+                    aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Affiliations</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-4">
+                <h4>organizations:</h4>
+                <ul>
+                  <div ng-repeat="organization in vm.organizations_collection">
+                    <div>
+                      {{ organization.affiliation }}
+                    </div>
+                  </div>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" ng-click="vm.close()" data-dismiss="modal">Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div modal="vm.ModalEditProject" class="modal fade bd-edit-project-modal-sm" id="edit_project_model" tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <form name="resource_form" ng-submit="edit_project()" method="post" novalidate>
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" ng-click="vm.closeModalEditProject()"
+                      aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="text-success pull-right" id="project_add_success"
+                   style="margin-right: 25px">{{ project_add_success }}</div>
+
+              <h4 class="modal-title" id="myModalLabel">Edit Project</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="project_name">Project Name*</label>
+                    <input type="text" class="form-control" id="project_name"
+                           ng-model="project_name" placeholder="Project name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="project_description">Description*</label>
+                    <textarea rows="4" type="text" class="form-control" id="project_description"
+                              ng-model="project_description" placeholder="Description..." required></textarea>
+                  </div>
+                  <h5 class="text-primary">Geographical area</h5>
+
+                  <div class="form-group form-inline">
+                    <label for="country">Country*</label>
+                    <div events="get_cities" id="country" ng-dropdown-multiselect="" options="country_data"
+                         selected-model="country_model"
+                         extra-settings="country_city_settings"></div>
+                  </div>
+                  <div class="form-group" ng-hide="cities_drop_down">
+                    <label for="city">City*</label>
+                    <div events="cities_event" id="city" ng-dropdown-multiselect="" options="city_data"
+                         selected-model="city_model"
+                         extra-settings="country_city_settings"></div>
+                  </div>
+                  <div id="">
+                    <h3 class="text-center">Contact Form Questions</h3>
+                    <span
+                        class="text-info small">Add questions that you want to ask the person who will contact you</span>
+                    <fieldset style="border: 0" id="parent_contact_questions"
+                              class="form-group form-inline"
+                              data-ng-repeat="question in questions">
+                      <label for="question">Question</label>
+                      <input class="form-control question" type="text"
+                             ng-model="question.name" name=""
+                             placeholder="Enter question">
+                      <button class="remove btn-danger"
+                              ng-click="removeQuestion(question)">-
+                      </button>
+                    </fieldset>
+                  </div>
+
+                  <a style="cursor: pointer" class="addfields text-primary pull-right"
+                     ng-click="addNewQuestion()">Add Question</a>
+
+                  <div class="form-group">
+                    <label for="contact_name">Contact person name*</label>
+                    <input type="text" class="form-control" id="contact_name"
+                           ng-model="contact_name" placeholder="Contact person name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_person_email">Email*</label>
+                    <input type="email" class="form-control" id="contact_person_email"
+                           ng-model="contact_email" placeholder="Contact person email..." required>
+                    <span class="small text-info">your email address will not be made public</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_description">About Me*</label>
+                    <textarea type="text" class="form-control" id="contact_description"
+                              ng-model="contact_description" placeholder="Description..." required></textarea>
+                  </div>
+                  <div class="form-group form-inline">
+                    <label for="anonymity">Anonymity</label>
+                    <input style="margin-left: 14px" type="checkbox" id="anonymity" ng-model="contact_anonymity"><br>
+                    <span class="small text-info">
+                      tick if you want to remain anonymous and would like us to moderate messages before sending to you
+                    </span>
+                  </div>
+                  <fieldset style="border: 0" class="form-group form-inline"
+                            data-ng-repeat="orgnaization in orgnaizations">
+                    <label for="organization">Organization</label>
+                    <input class="form-control organization" type="text"
+                           ng-model="orgnaization.name" name=""
+                           placeholder="Enter Organization Name">
+                    <button class="remove btn-danger"
+                            ng-click="removeOrgnaization(orgnaization)">-
+                    </button>
+                  </fieldset>
+
+
+                  <a style="cursor:pointer;" class="addOrgnaizations text-primary pull-right"
+                     ng-click="addNewOrgnaization()">Add organization</a>
+
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" ng-click="vm.closeModalEditProject()">Close</button>
+              <input type="submit" value="Update Project" class="btn btn-primary" id="submit">
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <div modal="vm.ModalEditNetwork" class="modal fade bd-edit-network-modal-sm" id="edit_project_model" tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <form name="resource_form" ng-submit="edit_network()" method="post" novalidate>
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" ng-click="vm.closeModalEditNetwork()"
+                      aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="text-success pull-right" id="project_add_success"
+                   style="margin-right: 25px">{{ project_add_success }}</div>
+
+              <h4 class="modal-title" id="myModalLabel">Edit Network</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="network_name">Network Name*</label>
+                    <input type="text" class="form-control" id="network_name"
+                           ng-model="network_name" placeholder="Network name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="network_description">Description*</label>
+                    <textarea rows="4" type="text" class="form-control" id="network_description"
+                              ng-model="network_description" placeholder="Description..." required></textarea>
+                  </div>
+                  <h5 class="text-primary">Geographical area</h5>
+
+                  <div class="form-group form-inline">
+                    <label for="country">Country*</label>
+                    <div events="get_cities" id="country" ng-dropdown-multiselect="" options="country_data"
+                         selected-model="country_model"
+                         extra-settings="country_city_settings"></div>
+                  </div>
+                  <div class="form-group" ng-hide="cities_drop_down">
+                    <label for="city">City*</label>
+                    <div events="cities_event" id="city" ng-dropdown-multiselect="" options="city_data"
+                         selected-model="city_model"
+                         extra-settings="country_city_settings"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_name">Contact person name*</label>
+                    <input type="text" class="form-control" id="contact_name"
+                           ng-model="contact_name" placeholder="Contact person name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_person_email">Email*</label>
+                    <input type="email" class="form-control" id="contact_person_email"
+                           ng-model="contact_email" placeholder="Contact person email..." required>
+                    <span class="small text-info">your email address will not be made public</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_description">About Me*</label>
+                    <textarea type="text" class="form-control" id="contact_description"
+                              ng-model="contact_description" placeholder="Description..." required></textarea>
+                  </div>
+                  <div class="form-group form-inline">
+                    <label for="anonymity">Anonymity</label>
+                    <input style="margin-left: 14px" type="checkbox" id="anonymity" ng-model="contact_anonymity"><br>
+                    <span class="small text-info">
+                      tick if you want to remain anonymous and would like us to moderate messages before sending to you
+                    </span>
+                  </div>
+                  <fieldset style="border: 0" class="form-group form-inline"
+                            data-ng-repeat="orgnaization in orgnaizations">
+                    <label for="organization">Organization</label>
+                    <input class="form-control organization" type="text"
+                           ng-model="orgnaization.name" name=""
+                           placeholder="Enter Organization Name">
+                    <button class="remove btn-danger"
+                            ng-click="removeOrgnaization(orgnaization)">-
+                    </button>
+                  </fieldset>
+
+
+                  <a style="cursor:pointer;" class="addOrgnaizations text-primary pull-right"
+                     ng-click="addNewOrgnaization()">Add organization</a>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" ng-click="vm.closeModalEditNetwork()">Close</button>
+              <input type="submit" value="Update Network" class="btn btn-primary" id="submit">
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <div modal="vm.ModalEditContact" class="modal fade bd-edit-contact-modal-sm" id="edit_project_model" tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <form name="resource_form" ng-submit="edit_contact()" method="post" novalidate>
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" ng-click="vm.closeModalEditContact()"
+                      aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <div class="text-success pull-right" id="project_add_success"
+                   style="margin-right: 25px">{{ project_add_success }}</div>
+
+              <h4 class="modal-title" id="myModalLabel">Edit Contact</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="contact_name">Contact Name*</label>
+                    <input type="text" class="form-control" id="contact_name"
+                           ng-model="contact_name" placeholder="Contact name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_description">Description*</label>
+                    <input type="text" class="form-control" id="contact_description"
+                           ng-model="contact_description" placeholder="Description..." required>
+                  </div>
+                  <div id="">
+                    <fieldset style="border: 0" class="form-group form-inline"
+                              data-ng-repeat="orgnaization in orgnaizations">
+                      <label for="organization">Organization</label>
+                      <input class="form-control organization" type="text"
+                             ng-model="orgnaization.name" name=""
+                             placeholder="Enter Organization Name">
+                      <button class="remove btn-danger"
+                              ng-click="removeOrgnaization(orgnaization)">-
+                      </button>
+                    </fieldset>
+                  </div>
+
+                  <a style="cursor:pointer;" class="addOrgnaizations text-primary pull-right"
+                     ng-click="addNewOrgnaization()">Add organization</a>
+
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" ng-click="vm.closeModalEditContact()">Close</button>
+              <input type="submit" value="Update Network" class="btn btn-primary" id="submit">
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <div modal="vm.confirmDeleteProjectModal" class="modal fade" id="confirmDeleteProjectModal" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Delete Project</h4>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete project?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="vm.closeDeleteProjectModal()">Cancel</button>
+            <button type="button" class="btn btn-danger" ng-click="deleteProject()"
+                    data-dismiss="modal">Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div modal="vm.confirmDeleteContactModal" class="modal fade" id="confirmDeleteContactModal" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Delete Contact</h4>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete contact?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="vm.closeDeleteContactModal()">Cancel</button>
+            <button type="button" class="btn btn-danger" ng-click="deleteContact()"
+                    data-dismiss="modal">Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div modal="vm.confirmDeleteNetworkModal" class="modal fade" id="confirmDeleteNetworkModal" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Delete Network</h4>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete network?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="vm.closeDeleteNetworkModal()">Cancel</button>
+            <button type="button" class="btn btn-danger" ng-click="deleteNetwork()"
+                    data-dismiss="modal">Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

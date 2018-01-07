@@ -1,0 +1,269 @@
+<style>
+  body {
+    background-color: #3D3A4D;
+    min-height: 100%;
+    height: auto;
+  }
+
+  .multiselect-parent .dropdown-toggle {
+    width: 384px;
+  }
+
+  .multiselect-parent .dropdown-menu {
+    width: 400px;
+  }
+</style>
+<script src="/static/js/creative.min.js"></script>
+<div class="container" ng-controller="AddResourceController as vm">
+
+  <div class="panel panel-default" style="margin-top: 150px">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <span style="font-size: 40px"><b>Pledge Resources</b></span>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 20px;margin-bottom: 20px">
+      <div class="col-xs-8 col-xs-offset-2">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group form-inline">
+              <div class="col-md-5"><label for="category">Category*</label></div>
+              <div class="col-md-7">
+                <div class="pull-left" id="category" ng-dropdown-multiselect="" options="categorydata"
+                     selected-model="categorymodel"
+                     extra-settings="categorysettings"></div>
+              </div>
+            </div>
+            <div class="col-md-12"> <h5 class="text-primary"><i class="fa fa-globe" aria-hidden="true"></i> Geographical area
+            </h5></div>
+
+            <div class="form-group form-inline">
+              <div class="col-md-5">
+                <label for="country">Country*</label>
+              </div>
+              <div class="col-md-7">
+                <div class="pull-left" events="get_cities" id="country" ng-dropdown-multiselect=""
+                     options="country_data"
+                     selected-model="country_model"
+                     extra-settings="country_settings" translation-texts="country_settings_text"></div>
+              </div><br><br><br>
+            </div>
+            <br>
+            <div class="form-group" ng-hide="cities_drop_down">
+              <div class="col-md-5">
+                <label for="city">City*</label>
+              </div>
+              <div class="col-md-7">
+                <div class="pull-left" events="cities_event" id="city" ng-dropdown-multiselect="" options="city_data"
+                     selected-model="city_model"
+                     extra-settings="city_settings" translation-texts="city_settings_text"></div>
+              </div>
+
+
+            </div>
+            <br><br>
+          </div>
+        </div>
+        <form name="resource_form" ng-submit="add_resource()" method="post" novalidate enctype="multipart/form-data">
+          <div class="" ng-repeat="resource in resources"
+               style="border-color:rgba(255, 255, 255, 0.4); border: 5px solid #dfe4ed; border-radius: 25px;
+               margin-top: 20px;">
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="well" style="border-color:rgba(255, 255, 255, 0.4);
+                     border: 2px solid #dfe4ed; border-radius: 15px; margin: 15px">
+                <div style="padding-left: 15px;padding-right: 15px;border: 0;" class="form-group form-inline"
+                     data-ng-repeat="orgnaization in resource.orgnaizations"><br>
+                  <div class="col-md-5">
+                    <label for="organization">Organization</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input style="width: 92%" class="form-control organization" type="text"
+                           ng-model="orgnaization.name" name=""
+                           placeholder="Organization name">
+                    <button class="remove btn-danger" ng-show="$last"
+                            ng-click="removeOrgnaization(resource)">x
+                    </button>
+                  </div>
+                  <br>
+                </div>
+                <div class="col-md-12">
+                  <a style="cursor:pointer;" class="addOrgnaizations text-primary pull-right"
+                     ng-click="addNewOrgnaization(resource)">Add organization</a>
+                </div>
+              </div>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 15px">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="col-md-5"><label for="resource_type">Resource type*</label></div>
+                  <div class="col-md-7">
+                    <select ng-change="vm.change_form(resource)" ng-model="resource.resource_type" class="form-control"
+                            id="resource_type">
+                      <option class="form-control"
+                              ng-repeat="resource in resource.all_resource_types">{{ resource.resource_type }}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row well" style="border-color:rgba(255, 255, 255, 0.4);
+                     border: 2px solid #dfe4ed; border-radius: 15px;margin: 15px" ng-show="resource.project_form">
+              <div class="col-md-12">
+
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="project_name">Project name*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input type="text" class="form-control" id="project_name"
+                           ng-model="resource.project_name" placeholder="Project name..." required>
+                  </div>
+                </div>
+                <br><br>
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="project_description">Description*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <textarea rows="4" type="text" class="form-control" id="project_description"
+                           ng-model="resource.project_description" placeholder="Description..." required></textarea>
+                  </div>
+                </div>
+                <br><br>
+                <div id="">
+                  <h3 class="text-center">Contact Form Questions</h3>
+                  <div class="form-group form-inline">
+                    <div class="col-md-5"><label for="duplicate_questions">Duplicate Questions</label></div>
+                    <div class="col-md-7"><input ng-model="resource.duplicate_questions" type="checkbox"
+                                                 ng-click="get_questions(resource)">
+                      <a class="text-info small pull-right" href="#" data-toggle="tooltip"
+                     title="Add questions that you want to ask the person &#10; who will contact you e.g
+                          &#10; 1) what is your area of work? &#10; 2) which resource do you need? &#10; 3) when you need my resource?">
+                    Help</a>
+                    </div>
+
+                  </div>
+                  <span
+                      class="text-info small">Add questions that you want to ask the person who will contact you</span>
+
+                  <div style="border: 0" id="parent_contact_questions"
+                            class="form-group form-inline"
+                            data-ng-repeat="question in resource.questions">
+                    <div class="col-md-5">
+                      <label for="question">Question</label>
+                    </div>
+                    <div class="col-md-7">
+                      <input style="width: 90%" class="form-control question" type="text"
+                             ng-model="question.name" name=""
+                             placeholder="Enter question">
+                      <button class="remove btn-danger" ng-show="$last"
+                              ng-click="removeQuestion(resource)">-
+                      </button>
+                    </div>
+                    <br>
+                  </div>
+                </div>
+
+                <div class="col-md-12"> <a style="cursor: pointer" class="addfields text-primary pull-right"
+                   ng-click="addNewQuestion(resource)">Add Question</a></div>
+              </div>
+            </div>
+
+            <div class="row well" style="border-color:rgba(255, 255, 255, 0.4);
+                     border: 2px solid #dfe4ed; border-radius: 15px;margin: 15px" ng-show="resource.network_form">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="network_name">Network name*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input type="text" class="form-control" id="network_name"
+                           ng-model="resource.network_name" placeholder="Network name..." required>
+                  </div>
+                </div>
+                <br><br>
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="network_description">Description*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <textarea rows="4" type="text" class="form-control" id="network_description"
+                           ng-model="resource.network_description" placeholder="Description..." required></textarea>
+                  </div>
+                </div>
+
+              </div>
+            </div><br>
+            <div class="row well" style="border-color:rgba(255, 255, 255, 0.4);
+                     border: 2px solid #dfe4ed; border-radius: 15px;margin: 15px">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="contact_name">Contact person name*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input type="text" class="form-control" id="contact_name"
+                           ng-model="resource.contact_name" placeholder="Contact person name..." required>
+                  </div>
+                </div>
+                <br><br>
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="contact_person_email">Email*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input type="email" class="form-control" id="contact_person_email"
+                           ng-model="resource.contact_email" placeholder="Contact person email..." required>
+                    <span class="small text-info">Your email address will not be made public</span>
+                  </div>
+
+                </div>
+                <br><br>
+                <div class="form-group">
+                  <div class="col-md-5">
+                    <label for="contact_description">About Me*</label>
+                  </div>
+                  <div class="col-md-7">
+                    <textarea rows="4" type="text" class="form-control" id="contact_description"
+                              ng-model="resource.contact_description" placeholder="Description..." required></textarea>
+                    <input file-model="resource.image" type="file" name="img">
+                    <!--<input type="file" file-upload multiple/>-->
+                  </div>
+                </div>
+                <div class="form-group form-inline">
+                  <div class="col-md-5">
+                    <label for="anonymity">Anonymity</label>
+                  </div>
+                  <div class="col-md-7">
+                    <input  type="checkbox" id="anonymity"
+                           ng-model="resource.contact_anonymity">
+                    <span class="small text-info">
+                      Tick if you want to remain anonymous and would like us to moderate messages before sending to you
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div ng-show="$last" class="row">
+              <button ng-hide="$first" class="remove btn btn-default pull-right"ng-click="removeResource(resource)"
+                      style="margin: 20px">
+                Remove</button>
+              <input type="button" class="btn btn-info pull-right" value="Pledge More Resources" style="margin: 20px"
+                     ng-click="add_resource_form(resource);"><br>
+            </div>
+          </div>
+          <div class="row" style="margin-top: 20px">
+            <div class="col-md-12 text-center">
+              <input type="submit" value="Save Resource" class="btn btn-primary align-center" id="submit"
+                     style="width: 30%">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

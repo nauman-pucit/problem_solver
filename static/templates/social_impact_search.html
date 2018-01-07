@@ -1,0 +1,436 @@
+<style>
+  body {
+    background-color: #3D3A4D;
+    min-height: 100%;
+    height: auto;
+  }
+
+  .multiselect-parent .dropdown-toggle {
+    width: 186px;
+  }
+
+  .multiselect-parent .dropdown-menu {
+    width: 186px;
+  }
+</style>
+
+<div class="container" ng-controller="SearchController as vm">
+  <section class="panel" style="margin-top: 150px">
+    <div class="panel-heading text-center">
+      <h3>SEARCH</h3>
+    </div>
+    <form role="form" ng-submit="vm.search()">
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-10">
+            <div class="input-group">
+              <input type="text" class="form-control" id="id_search_text" ng-model="vm.searchText" name="search_text"
+                     placeholder="Search..." style="height: 40px">
+              <span class="input-group-btn">
+            <button class="btn btn-primary" type="submit">SEARCH</button>
+          </span>
+            </div>
+          </div>
+          <div class="col-md-1"></div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-1"></div>
+          <div class="col-md-10">
+            <div class="row">
+              <div class="col-md-3">
+                <div class="btn-group" data-toggle="buttons">
+                  <label class="btn btn-default active" ng-click="search_type='Resources'">
+                    <input type="radio" ng-model="search_type" value="Resources" name="search_type">
+                    Resources
+                  </label>
+                  <label class="btn btn-default " ng-click="search_type='Skills'">
+                    <input type="radio" ng-model="search_type" value="Skills" name="search_type" checked="">
+                    Skills
+                  </label>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="pull-left" events="get_cities" id="country" ng-dropdown-multiselect=""
+                     options="country_data"
+                     selected-model="country_model"
+                     extra-settings="country_settings" translation-texts="country_settings_text"></div>
+                <input ng-model="vm.geographical_area" type="text" class="hidden form-control" style="width: 100%"
+                       placeholder="Geographical Area...">
+              </div>
+              <div class="col-md-3">
+                <div class="pull-left" events="cities_event" id="city" ng-dropdown-multiselect="" options="city_data"
+                     selected-model="city_model"
+                     extra-settings="city_settings" translation-texts="city_settings_text"></div>
+              </div>
+              <div class="col-md-3" ng-if="search_type == 'Resources'">
+                <div events="category_event" class="pull-left" ng-dropdown-multiselect="" options="categorydata"
+                     selected-model="categorymodel"
+                     extra-settings="categorysettings" translation-texts="category_settings_text"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+  <section class="panel"  ng-if="search_type == 'Resources'">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="margin-bottom-50">
+            <div class="nav-tabs-vertical">
+              <ul class="nav nav-tabs" role="tablist" style=" position: relative; z-index: 100;">
+                <li class="nav-item text-center">
+                  <a class="nav-link active" href="javascript: void(0);" data-toggle="tab" data-target="#projects"
+                     role="tab"
+                     aria-expanded="true"><i class="fa fa-5x fa-cubes" aria-hidden="true"></i><br><b>Projects</b>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="javascript: void(0);" data-toggle="tab" data-target="#networks" role="tab"
+                     aria-expanded="false">
+                    <i class="fa fa-5x fa-users" aria-hidden="true"></i><br><b>Networks</b>
+                  </a>
+                </li>
+              </ul>
+              <div class="tab-content padding-vertical-10">
+                <div class="tab-pane active" id="projects" role="tabpanel" aria-expanded="true">
+                  <div class="text-center" ng-if="vm.loading">
+                    <i class="fa fa-5x fa-spinner text-primary w3-spin" aria-hidden="true"
+                    style="margin-top: 100px"></i>
+                  </div>
+                  <div ng-if="!vm.loading" class="col-md-3" ng-repeat="project in vm.projects" style="padding: 20px">
+                    <div class="step-block step-primary "
+                         ng-style="($first && vm.mobile_device) ? {'margin-top':'300px' }: {'margin-top' : '0px'}">
+                      <span class="step-digit"><i class="fa fa-5x fa-cubes" aria-hidden="true"></i>
+                      </span>
+                      <div class="step-desc">
+                        <span class="step-title">{{ project.project_name }}</span>
+                        <hr><b>
+                        <span ng-repeat="category in project.resource.resource_category" class="small">
+                            {{ category.category_name | uppercase | limitTo:15 }}
+                          <tag class="text-primary" ng-hide="$last"> | </tag>
+                          </span></b><br><br>
+                        <p class=" small">{{ project.project_description | limitTo:90 }}
+                          <span ng-if="project.project_description.length > 90">
+                              ...
+                            </span>
+                        </p>
+                        <div class="" style="position:absolute; bottom: 40px;">
+                          <button class="w3-btn w3-white w3-border w3-border-blue w3-round-large w3-hover-blue"
+                                  ui-sref="projectDetail({projectId: project.id})"
+                                  style=""><b>Details</b></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="networks" role="tabpanel" aria-expanded="false">
+                  <div class="text-center" ng-if="vm.loading">
+                    <i class="fa fa-5x fa-spinner text-primary w3-spin" aria-hidden="true"
+                    style="margin-top: 100px"></i>
+                  </div>
+                  <div ng-if="!vm.loading" class="col-md-3" ng-repeat="network in vm.networks" style="padding: 20px">
+                    <div class="step-block step-primary"
+                         ng-style="($first && vm.mobile_device) ? {'margin-top':'300px' }: {'margin-top' : '0px'}">
+                      <span class="step-digit">
+                        <i class="fa fa-5x fa-users" aria-hidden="true"></i>
+                      </span>
+                      <div class="step-desc">
+                        <span class="step-title">{{ network.network_name | uppercase | limitTo:15 }}</span>
+                        <hr>
+                        <span ng-repeat="category in network.resource.resource_category">
+                          {{ category.category_name | uppercase }}
+                            <tag class="text-primary" ng-hide="$last"> | </tag></span><br><br>
+                        <p class=" small">{{ network.network_description | limitTo:90 }}
+                          <span ng-if="network.network_description.length > 90">
+                              ...
+                          </span>
+                        </p>
+                        <div class="col-md-12 " style="position:absolute; bottom: 40px;">
+                          <button class="w3-btn w3-white w3-border w3-border-blue w3-round-large w3-hover-blue"
+                                  ui-sref="networkDetail({networkId: network.id})"
+                                  ><b>Details</b></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="panel"  ng-if="search_type != 'Resources'">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="margin-bottom-50">
+            <div class="nav-tabs-vertical">
+              <ul class="nav nav-tabs" role="tablist" style=" position: relative; z-index: 100;">
+                <li class="nav-item text-center">
+                  <a class="nav-link active" href="javascript: void(0);" data-toggle="tab" data-target="#projects"
+                     role="tab"
+                     aria-expanded="true"><i class="fa fa-5x fa-cubes" aria-hidden="true"></i><br><b>Skills</b>
+                  </a>
+                </li>
+              </ul>
+              <div class="tab-content padding-vertical-10">
+                <div class="tab-pane active" id="projects" role="tabpanel" aria-expanded="true">
+                  <div class="text-center" ng-if="vm.loading">
+                    <i class="fa fa-5x fa-spinner text-primary w3-spin" aria-hidden="true"
+                    style="margin-top: 100px"></i>
+                  </div>
+                  <div ng-if="!vm.loading" class="col-md-3" ng-repeat="skill in vm.skills" style="padding: 20px">
+                    <div class="step-block step-primary"
+                    ng-style="($first && vm.mobile_device) ? {'margin-top':'300px' }: {'margin-top' : '0px'}">
+                      <span class="step-digit"><i class="fa fa-5x fa-cubes" aria-hidden="true"></i>
+                      </span>
+                      <div class="step-desc">
+                        <span class="step-title">{{ skill.skill_name }}</span>
+                        <hr>
+                        <span style="color: #dddddd">
+                            {{ skill.skill_level | uppercase }}
+                          </span><br><br>
+                        <p class=" small">{{ skill.skill_description | limitTo:90 }}
+                          <span ng-if="skill.skill_description.length > 90">
+                              ...
+                            </span>
+                        </p>
+                        <div class="col-md-12 " style="position:absolute; bottom: 40px;">
+                          <button class="w3-btn w3-white w3-border w3-border-blue w3-round-large w3-hover-blue"
+                                  ui-sref="skillDetail({skillId: skill.id})"
+                                  ><b>Details</b></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!--<div class="panel panel-default" style="margin-top: 150px">
+    <div class="panel-heading">
+      <div class="panel-title  col-md-12">
+
+        <h2 class="text-primary well"><b>Search</b>
+        </h2>
+
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 20px;margin-bottom: 20px">
+      <div class="col-xs-8 col-xs-offset-2">
+        <form role="form" ng-submit="vm.search()">
+          <div class="input-group my-group">
+            <input class="form-control" id="id_search_text" ng-model="vm.searchText"
+                   name="search_text" placeholder="Search for..."
+                   style="width: 99%" type="text">
+            <div class="input-group-btn">
+              <button class="btn btn-primary" type="submit">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-4"><input type="radio" ng-model="search_type" value="Resources" name="search_type"
+                                           checked> Resources
+              </div>
+              <div class="col-md-4"><input type="radio" ng-model="search_type" value="Skills" name="search_type"> Skills
+              </div>
+            </div>
+          </div>
+          <div class="row form-inline" style="margin-top: 20px">
+            <div class="col-md-4">
+              <div class="pull-left" events="get_cities" id="country" ng-dropdown-multiselect="" options="country_data"
+                   selected-model="country_model"
+                   extra-settings="country_settings" translation-texts="country_settings_text"></div>
+              <input ng-model="vm.geographical_area" type="text" class="hidden form-control" style="width: 100%"
+                     placeholder="Geographical Area...">
+            </div>
+            <div class="col-md-4">
+              <div class="pull-left" events="cities_event" id="city" ng-dropdown-multiselect="" options="city_data"
+                   selected-model="city_model"
+                   extra-settings="city_settings" translation-texts="city_settings_text"></div>
+            </div>
+            <div class="col-md-4" ng-if="search_type == 'Resources'">
+              <div events="category_event" class="pull-left" ng-dropdown-multiselect="" options="categorydata"
+                   selected-model="categorymodel"
+                   extra-settings="categorysettings" translation-texts="category_settings_text"></div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>-->
+  <div class="hidden">
+
+    <div ng-if="vm.projects.length != 0 || vm.contacts.length != 0 || vm.networks.length != 0"
+         class="panel panel-default"
+         ng-hide="vm.selectedCategory.value === 'project' || vm.selectedCategory.value === 'all'">
+      <div class="panel-heading">
+        <h1 class="panel-title text-primary" ng-if="search_type == 'Resources'"><b>RESOURCES</b>
+        </h1>
+        <h1 class="panel-title text-primary" ng-if="search_type != 'Resources'"><b>SKILLS</b>
+        </h1>
+      </div>
+      <div class="panel-body">
+        <table ng-if="vm.projects.length != 0 && search_type == 'Resources'" class="table table-hover table-stripped">
+          <caption class="text-primary">Projects</caption>
+          <thead>
+          <tr>
+            <th style="width: 25%">Project Name</th>
+            <th style="width: 40%">Project Description</th>
+            <th style="width: 20%">Category</th>
+            <th style="width: 15%"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="project in vm.projects">
+            <td>{{ project.project_name }}</td>
+            <td>{{ project.project_description }}</td>
+            <td><span
+                ng-repeat="category in project.resource.resource_category">{{ category.category_name | uppercase }}
+            <tag class="text-primary" ng-hide="$last"> | </tag></span></td>
+
+            <td><a class="text-primary" ui-sref="projectDetail({projectId: project.id})" href="javascript:void(0)">Details</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table ng-if="vm.networks.length != 0 && search_type == 'Resources'" class="table table-hover table-stripped">
+          <caption class="text-primary"> Networks</caption>
+          <thead>
+          <tr>
+            <th style="width: 25%">Network Name</th>
+            <th style="width: 40%">Network Description</th>
+            <th style="width: 20%">Category</th>
+            <th style="width: 15%"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="network in vm.networks">
+            <td>{{ network.network_name }}</td>
+            <td>{{ network.network_description }}</td>
+            <td><span
+                ng-repeat="category in network.resource.resource_category">{{ category.category_name | uppercase }}
+            <tag class="text-primary" ng-hide="$last"> | </tag></span></td>
+            <td><a class="text-primary" ui-sref="networkDetail({networkId: network.id})" href="javascript:void(0)">Details</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table ng-if="vm.skills.length != 0 && search_type == 'Skills'" class="table table-hover table-stripped">
+          <caption class="text-primary"> Skills</caption>
+          <thead>
+          <tr>
+            <th style="width: 25%">Skill Name</th>
+            <th style="width: 40%">Skill Description</th>
+            <th style="width: 20%">Skill Level</th>
+            <th style="width: 15%"></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="skill in vm.skills">
+            <td>{{ skill.skill_name }}</td>
+            <td>{{ skill.skill_description }}</td>
+            <td>{{ skill.skill_level }}</td>
+            <td><a class="text-primary" ui-sref="skillDetail({skillId: skill.id})" href="javascript:void(0)">Details</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="hidden panel panel-default"
+         ng-hide="vm.selectedCategory.value === 'contact' || vm.selectedCategory.value === 'all'">
+      <div class="panel-heading">
+        <h3 class="panel-title text-primary">Contacts</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table table-hover table-stripped">
+          <thead>
+          <tr>
+            <th>Contact Name</th>
+            <th>Contact Description</th>
+            <th>Area of Interests</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-if="category == contact.resource.resource_category.category_name" ng-repeat="contact in vm.contacts">
+            <td>{{ contact.contact_name }}</td>
+            <td>{{ contact.contact_description }}</td>
+            <td>{{ contact.area_of_interests }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="hidden panel panel-default"
+         ng-hide="vm.selectedCategory.value === 'network' || vm.selectedCategory.value === 'all'">
+      <div class="panel-heading">
+        <h3 class="panel-title text-primary">Networks</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table table-hover table-stripped">
+          <thead>
+          <tr>
+            <th>Network Name</th>
+            <th>Network Description</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-if="category == network.resource.resource_category.category_name" ng-repeat="network in vm.networks">
+            <td>{{ network.network_name }}</td>
+            <td>{{ network.network_description }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
+  <div modal="vm.showModal" class="modal" id="resourceDetail">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" ng-click="vm.close()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div style="margin-right: 25px">
+            <i id="success_btn_field_of_work"
+               class="fa fa-check-square-o fa-2x pull-right text-success hide"
+               aria-hidden="true"></i>
+          </div>
+          <h4 class="modal-title" id="myModalLabel">Details</h4>
+        </div>
+        <div class="modal-body">
+          <div ui-view></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" ng-click="vm.close()" data-dismiss="modal">Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

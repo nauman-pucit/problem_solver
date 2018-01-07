@@ -1,0 +1,393 @@
+{% extends 'base_.html' %}
+{% block title %}Pledge Resources{% endblock %}
+{% block body %}
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="/social_network/">Problem Solver Central</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="/social_network/">About</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="/social_network/">Stats</a>
+                    </li>
+
+                    {% if message == "page found" %}
+                        <li id="logout_id">
+                            <a  class="page-scroll" href="/social_network/log_out/">Logout</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid style="; padding-top: 70px; " -->
+    </nav>
+        {% if message == "page found" %}
+            <div ng-controller="models_app_controler">
+                <div class="container" style="margin-top: 60px">
+                <div class="row">
+                    <div class="col-md-12">
+                         <h2 class="text-primary well">{{ title }}</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-11 col-md-11 col-sm-8 col-xs-9 bhoechie-tab-container">
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
+                          <div class="list-group">
+                            <a href="#" class="list-group-item active text-center">
+                              <h4 class="glyphicon glyphicon-tasks"></h4><br/>Projects
+                            </a>
+                            <a href="#" class="list-group-item text-center">
+                              <h4 class="glyphicon glyphicon-retweet"></h4><br/>Networks
+                            </a>
+                            <a href="#" class="list-group-item text-center">
+                              <h4 class="glyphicon glyphicon-list"></h4><br/>Contacts
+                            </a>
+                          </div>
+                        </div>
+                        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+                            <!-- flight section -->
+                            <div class="bhoechie-tab-content active">
+                                <center>
+                                  <h3 style="margin-top: 0;color:#F05F40">Projects</h3>
+                                    <div class="pull-right">
+                                        <button class="btn btn-primary" data-toggle="modal" data-target=".bd-add-project-modal-sm">Add New Project</button>
+
+                                    </div>
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                              <th>Project Name</th>
+                                              <th>Description</th>
+                                              <th>Area of Work</th>
+                                              <th>Country/ Region</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="project in projects">
+                                            <td>{{ project.project_name }}</td>
+                                            <td>{{ project.project_description }}</td>
+                                            <td>{{ project.area_of_work }}</td>
+                                            <td>{{ project.country_or_region }}</td>
+                                        </tr>
+                                    {% for project in project_list %}
+                                        <tr>
+                                            <td>{{ project.project_name }}</td>
+                                            <td>{{ project.project_description }}</td>
+                                            <td>{{ project.area_of_work }}</td>
+                                            <td>{{ project.country_or_region }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </center>
+                            </div>
+                            <!-- train section -->
+                            <div class="bhoechie-tab-content">
+                                <center>
+                                    <h3 style="margin-top: 0;color:#F05F40">Networks</h3>
+                                    <div class="pull-right">
+                                        <button class="btn btn-primary" data-toggle="modal" data-target=".bd-add-network-modal-sm">Add New Network</button>
+                                    </div>
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th>Network Name</th>
+                                            <th>Description</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="network in networks">
+                                            <td>{{ network.network_name }}</td>
+                                            <td>{{ network.network_description }}</td>
+                                        </tr>
+                                    {% for network in network_list %}
+                                        <tr>
+                                            <td>{{ network.network_name }}</td>
+                                            <td>{{ network.network_description }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </center>
+                            </div>
+
+                            <!-- hotel search -->
+                            <div class="bhoechie-tab-content">
+                                <center>
+                                    <h3 style="margin-top: 0;color:#F05F40">Contacts</h3>
+                                    <div class="pull-right">
+                                        <button class="btn btn-primary" data-toggle="modal" data-target=".bd-add-contact-modal-sm">Add New Contact</button>
+
+                                    </div>
+                                    <table class="table">
+                                        <thead>
+                                          <tr>
+                                            <th>Contact Name</th>
+                                            <th>Description</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="contact in contacts">
+                                            <td>{{ contact.contact_name }}</td>
+                                            <td>{{ contact.contact_description }}</td>
+                                        </tr>
+                                    {% for contact in contact_list %}
+                                        <tr>
+                                            <td>{{ contact.contact_name }}</td>
+                                            <td>{{ contact.contact_description }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+            </div>
+
+                <div  >
+            {#            model for network's field of work#}
+            <div class="modal fade bd-network-modal-sm" id="field_of_work_model" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-md">
+                    <div class="modal-content" >
+                        <form ng-submit="submitForm()" method="post"> {% csrf_token %}
+                              <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <div style="margin-right: 25px">
+                                        <i id="success_btn_field_of_work" class="fa fa-check-square-o fa-2x pull-right text-success hide" aria-hidden="true"></i>
+                                    </div>
+
+                                <h4 class="modal-title" id="myModalLabel">Add Fields Of Work</h4>
+                              </div>
+                              <div class="modal-body" >
+
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                        <table>
+                                            {{ field_of_work_form.as_table }}
+                                        </table>
+                                    </div>
+                                </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <input type="submit" value="Add Field Of Work" class="btn btn-primary" id="submit" >
+                              </div>
+                        </form>
+                    </div>
+
+                  </div>
+                </div>
+
+{#            model for affiliation#}
+            <div class="modal fade bd-example-modal-sm" id="affiliation_model" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-md">
+                    <div class="modal-content" >
+                        <form name="signinForm" ng-submit="submit()" method="post"> {% csrf_token %}
+                              <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <div style="margin-right: 25px">
+                                        <i id="success_btn_affiliation" class="fa fa-check-square-o fa-2x pull-right text-success hide" aria-hidden="true"></i>
+                                    </div>
+
+                                <h4 class="modal-title" id="myModalLabel">Add Affiliation</h4>
+                              </div>
+                              <div class="modal-body" >
+
+                                  <div class="row">
+                                    <div class="col-md-4">
+                                        <table>
+                                            {{ affiliation_form.as_table }}
+                                        </table>
+                                    </div>
+                                </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                  <input type="submit" value="Add Affiliation" class="btn btn-primary" id="submit" >
+                              </div>
+                        </form>
+                    </div>
+
+                  </div>
+                </div>
+{#              model for project#}
+            <div class="modal fade bd-add-project-modal-sm" id="add_project_model" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-md">
+                    <div class="modal-content" >
+                        <form ng-submit="add_project()" method="post"> {% csrf_token %}
+                              <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <div class="text-success pull-right" id="project_add_success" style="margin-right: 25px">{{ project_add_success }}</div>
+
+                                <h4 class="modal-title" id="myModalLabel">Add Project</h4>
+                              </div>
+                              <div class="modal-body" >
+
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                          <div class="form-group">
+                                            <label for="project_name">Project Name*</label>
+                                            <input type="text" class="form-control" id="project_name" ng-model="project_name" placeholder="Project name..." required>
+                                          </div>
+                                          <div class="form-group">
+                                                <label for="project_description">Description*</label>
+                                                <input type="text" class="form-control" id="project_description" ng-model="project_description" placeholder="Description..." required>
+                                          </div>
+                                          <div class="form-group">
+                                            <label for="area_of_work">Area of Work*</label>
+                                            <input type="text" class="form-control" id="area_of_work" ng-model="area_of_work" placeholder="Enter Area of Work" required>
+                                          </div>
+                                          <div class="form-group">
+                                            <label for="country_or_region">Country/ Region*</label>
+                                            <input type="text" class="form-control" id="country_or_region" ng-model="country_or_region" placeholder="Country / Region"  required>
+                                          </div>
+{#                                        <table class="table">#}
+{#                                            {{ projects_form.as_table }}#}
+{#                                        </table>#}
+                                    </div>
+                                </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <input type="submit" value="Save Project" class="btn btn-primary" id="submit" >
+                              </div>
+                        </form>
+                    </div>
+
+                  </div>
+                </div>
+
+{#            model for network#}
+            <div class="modal fade bd-add-network-modal-sm" id="add_network_model" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-md">
+                    <div class="modal-content" >
+                        <form ng-submit="add_network()" method="post"> {% csrf_token %}
+                              <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <div class="text-success pull-right" id="network_add_success" style="margin-right: 25px">{{ network_add_success }}</div>
+
+                                <h4 class="modal-title" id="myModalLabel">Add Network</h4>
+                              </div>
+                              <div class="modal-body" >
+
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                          <div class="form-group">
+                                            <label for="network_name">Network Name*</label>
+                                            <input type="text" class="form-control" id="network_name" ng-model="network_name" placeholder="Network name..." required>
+                                          </div>
+                                          <div class="form-group">
+                                                <label for="network_description">Description*</label>
+                                                <input type="text" class="form-control" id="network_description" ng-model="network_description" placeholder="Description..." required>
+                                          </div>
+                                          <div id="">
+                                              <fieldset id="parent_fields_of_work" class="form-group form-inline"  data-ng-repeat="field in fields">
+                                                  <label for="field_of_work">Field of Work</label>
+                                                  <input class="form-control field_of_work" type="text" ng-model="field.name" name="" placeholder="Enter Fields of Work">
+                                                  <button class="remove btn-danger" ng-show="$last" ng-click="removeField()">-</button>
+                                              </fieldset>
+                                          </div>
+
+                                           <input type="button" class="addfields btn-info pull-right" ng-click="addNewField()" value="Add fields of work">
+
+                                    </div>
+                                </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <input type="submit" value="Save Network" class="btn btn-primary" id="submit" >
+                              </div>
+                        </form>
+                    </div>
+
+                  </div>
+                </div>
+
+{#            model for contacts#}
+            <div class="modal fade bd-add-contact-modal-sm" id="add_contact_model" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-md">
+                    <div class="modal-content" >
+                        <form ng-submit="add_contact()" method="post"> {% csrf_token %}
+                              <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <div class="text-success pull-right" id="contact_add_success" style="margin-right: 25px">{{ contact_add_success }}</div>
+
+                                <h4 class="modal-title" id="myModalLabel">Add Contact</h4>
+                              </div>
+                              <div class="modal-body" >
+
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                          <div class="form-group">
+                                            <label for="contact_name">Contact Name*</label>
+                                            <input type="text" class="form-control" id="contact_name" ng-model="contact_name" placeholder="Contact name..." required>
+                                          </div>
+                                          <div class="form-group">
+                                                <label for="contact_description">Description*</label>
+                                                <input type="text" class="form-control" id="contact_description" ng-model="contact_description" placeholder="Description..." required>
+                                          </div>
+                                          <div id="">
+                                              <fieldset class="form-group form-inline"  data-ng-repeat="orgnaization in orgnaizations">
+                                                  <label for="organization">Organization</label>
+                                                  <input class="form-control organization" type="text" ng-model="orgnaization.name" name="" placeholder="Enter Organization Name">
+                                                  <button class="remove btn-danger" ng-show="$last" ng-click="removeOrgnaization()">-</button>
+                                              </fieldset>
+                                          </div>
+
+                                           <input type="button" class="addOrgnaizations btn-info pull-right" ng-click="addNewOrgnaization()" value="Add organization">
+
+                                    </div>
+                                </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <input type="submit" value="Save Contact" class="btn btn-primary" id="submit" >
+                              </div>
+                        </form>
+                    </div>
+
+                  </div>
+                </div>
+        </div>
+            </div>
+
+
+        {% else %}
+            <div class="row">
+                <div style="margin-top:60px " class="col-md-12 well">
+                    <h1 class="text-info"> page not found</h1>
+                </div>
+            </div>
+        {% endif %}
+
+
+{% endblock %}
+

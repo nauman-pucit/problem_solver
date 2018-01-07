@@ -1,0 +1,253 @@
+<style>
+  .alignRight {
+    width: 80%;
+    margin-left: 20px;
+  }
+
+  body {
+    background-color: #3D3A4D;
+    min-height: 100%;
+    height: auto;
+  }
+
+</style>
+<script>
+  $(document).ready(function ($) {
+    $('#phone').mask('999 999 99999');
+    $('#zip').mask("99999?-9999");
+  });
+</script>
+<section>
+  <div class="container "ng-controller="UserProfileEditController">
+
+    <div class="row" style="margin-top: 150px">
+
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10 " >
+        <div class="row well">
+
+          <div class="col-md-12 text-center">
+            <h2 class="section-heading">
+              {{ full_name | uppercase }}</h2>
+            <hr class="primary">
+          </div>
+          <div class="row">
+            <!-- left column -->
+            <div class="col-md-4">
+              <div class="text-center">
+                <img class="w3-round-xxlarge" src="{{ user.avatar }}" style="width: 100%">
+                <!--<i class="fa fa-user fa-5x text-primary" aria-hidden="true"></i>-->
+                <hr class="primary">
+                <label class="w3-btn  w3-blue w3-border w3-border-blue w3-round-large w3-hover-white">
+                  Change <input file-model="avatar" type="file" style="display: none;">
+                </label>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <form name="userProfileForm" ng-submit="submit(userProfileForm)" novalidate>
+                <table class="table">
+                  <tbody>
+                  <tr>
+                    <th>First Name:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="first_name"
+                               ng-model="user.first_name"
+                               placeholder="First Name..." validator="required"
+                               valid-method="keydown">
+
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Last Name:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="last_name"
+                               ng-model="user.last_name"
+                               placeholder="Last Name..." validator="required"
+                               valid-method="keydown">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Phone:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="text" class="form-control" maxlength="15" id="phone" name="phone"
+                               ng-model="user.phone" placeholder="XXX XXX XXXX">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Orgnaization:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="orgnaization"
+                               ng-model="user.orgnaization" placeholder="Orgnaization..."
+                        >
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Designation:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="designamtion"
+                               ng-model="user.designation" placeholder="Designation..."
+                        >
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Address:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="address1"
+                               ng-model="user.address1"
+                               placeholder="Address Line 1...">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Address:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="text" class="form-control" id="address2"
+                               ng-model="user.address2"
+                               placeholder="Address Line 2...">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Country:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="country"
+                               ng-model="user.country"
+                               placeholder="Country...">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>State/Province:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="state"
+                               ng-model="user.state"
+                               placeholder="State/Province ...">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>City:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="city"
+                               ng-model="user.city"
+                               placeholder="City...">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Zip/Postal Code:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="text" class=" form-control" name="zip" id="zip"
+                               ng-model="user.zipcode"
+                               placeholder="XXXXXX">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Geographical Area:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="geographical_area"
+                               ng-model="user.geographical_area"
+                               placeholder="Geographical Area...">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Moderation:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="checkbox" class="" name="moderation"
+                               ng-model="user.moderation">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Anonymity:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="checkbox" class="che" name="anonymity"
+                               ng-model="user.anonymity">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr ng-hide="is_social_account">
+                    <th></th>
+                    <td>
+                      <a style="cursor: pointer" class="pull-right text-primary"
+                         ng-click="change_password()">Change Password</a>
+                    </td>
+                  </tr>
+                  <tr ng-hide="is_social_account" ng-if="currnet_password_field">
+                    <th>Current Password:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="password" class=" form-control"
+                               ng-model="user.current_password"
+                               placeholder="Current Password" validator="required"
+                               valid-method="keydown">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr ng-hide="is_social_account" ng-if="new_password_field">
+                    <th>New Password:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="password" class=" form-control"
+                               ng-model="user.new_password"
+                               placeholder="New Password" validator="required"
+                               valid-method="keydown">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr ng-hide="is_social_account" ng-if="confirm_password_field">
+                    <th>Confirm Password:</th>
+                    <td>
+                      <div class="form-group">
+                        <input type="password" class="form-control" id="password2"
+                               ng-blur="checkPassword($event)" ng-model="user.password2"
+                               placeholder=" Confirm Password" validator="required"
+                               valid-method="keydown" pw-check='password1'>
+                        <p ng-show="pwdMatchError" id="pwdMatchError" class="text-danger small">
+                          password
+                          does not match</p>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2">
+                      <div class="col-md-12">
+                        <div class="form-group text-center"><br>
+                          <input type="submit" value="Update Profile" id="submit"
+                                 class="w3-btn w3-xlarge w3-blue w3-border w3-border-blue w3-round-large w3-hover-white">
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </form>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

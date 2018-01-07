@@ -1,0 +1,265 @@
+<style>
+  .alignRight {
+    width: 80%;
+    margin-left: 20px;
+  }
+
+  body {
+    background-color: #3D3A4D;
+    min-height: 100%;
+    height: auto;
+  }
+  .active {
+    border-right-color: #c33 !important;
+    background-color: #dddddd;
+  }
+
+  .position-fixed {
+    position: fixed;
+    height: 78%;
+  }
+</style>
+
+<section ng-controller="LoungeAreaController as vm">
+  <div ng-if="!vm.not_found" class="row">
+
+    <div class="col-md-8">
+      <div style="position:fixed; bottom:0%; height: 90%"
+           ng-style="vm.mobile_device ? {'width' : '150%','left':'45%' } : {'width' : '230%','left':'20%' }">
+        <irontec-simple-chat
+            messages="vm.messages"
+            username="vm.username"
+            input-placeholder-text="write message"
+            submit-button-text="Send"
+            title="SOLUTIONS HUB "
+            theme="irontec"
+            submit-function="vm.sendMessage"
+            visible="vm.visible"
+            expand-on-new="vm.expandOnNew">
+        </irontec-simple-chat>
+      </div>
+    </div>
+    <div class="col-md-2 scrollable" ng-hide="vm.mobile_device" style="position:absolute; bottom:0%; right:0%;height: 90%;
+         background-color: #E5E5E5;overflow-y: scroll"
+         ng-style="vm.mobile_device ? {'width' : '25%' } : {'width' : '25%'}"><br>
+      <div class="well">
+        <div>
+          <button class="w3-btn w3-blue w3-border w3-border-blue w3-round-large w3-hover-blue" style="background-color: #c33" ui-sref="create_solutions_hub">
+            Create Your SOLUTION HUB
+          </button>
+          <br>
+          <br>
+          <button ng-if="vm.lounge_area_request.status == 'Pending'"
+                  class="w3-btn w3-red w3-border w3-border-red w3-round-large w3-hover-red"
+                  ng-click="vm.rejectRequest()" href="javascript:void(0)">Reject
+          </button>
+          <button ng-if="vm.lounge_area_request.status == 'Pending'"
+                  class="w3-btn w3-green w3-border w3-border-green w3-round-large w3-hover-green"
+                  ng-click="vm.acceptRequest()" href="javascript:void(0)">Join
+          </button>
+        </div>
+        <h1 style="margin-top: 70px">{{ vm.loungeAreaName }}</h1>
+        <div style="margin-top: 30px">
+          <div class="panel-group">
+            <div class="panel panel-default" ng-init="flag=true">
+              <div style="cursor: pointer; background-color: #c33; color: #ffffff" data-toggle="collapse"
+                   data-target="#collapse1" class="panel-heading"
+                   ng-click="flag ? flag = false : flag=true">
+                <h4 class="panel-title">
+                  Description<i ng-if="!flag" class="fa fa-caret-down pull-right" aria-hidden="true"></i>
+                  <i ng-if="flag" class="fa fa-caret-right pull-right" aria-hidden="true"></i>
+                </h4>
+              </div>
+              <div id="collapse1" class="panel-collapse collapse">
+                <div class="panel-body">{{ vm.loungeAreaDescription }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-group" ng-if="vm.is_restricted">
+            <div class="panel panel-default" ng-init="flag=true">
+              <div style="cursor: pointer; background-color: #c33; color: #ffffff" data-toggle="collapse"
+                   data-target="#collapse2" class="panel-heading"
+                   ng-click="flag ? flag = false : flag=true">
+                <h4 class="panel-title">
+                  Members | <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                  <span ng-if="vm.lounge_area_members.length != 0">{{ vm.lounge_area_members.length }}</span>
+                  <i ng-if="!flag" class="fa fa-caret-down pull-right" aria-hidden="true"></i>
+                  <i ng-if="flag" class="fa fa-caret-right pull-right" aria-hidden="true"></i>
+                </h4>
+              </div>
+              <div id="collapse2" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <form ng-submit="vm.addMember()" ng-if="vm.is_admin_user">
+                    <div class="form-group">
+                      <label for="add_member" style="color: #aaaaaa">ADD MEMBERS</label>
+                      <input type="email" name="add_member" class="form-control" ng-model="vm.add_member"
+                             placeholder="Enter Email Address">
+                    </div>
+                  </form>
+                  <span ng-repeat="member in vm.lounge_area_members"><img height="25" width="25"
+                                                                          src="{{ member.avatar }}">
+                        {{ member.first_name }} {{ member.last_name }} {{ member.name }}
+                        <br><br>
+                      </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div ng-if="request.status !== 'Reject'" class="col-md-2 scrollable"
+         style="position:fixed; bottom:0%; left:0%; height: 90%;background-color: #ffffff;
+         overflow-y: scroll" ng-style="vm.mobile_device ? {'width' : '45%' } : {'width' : '20%'}"><br>
+      <div class="">
+        <div class="" ng-show="vm.mobile_device">
+        <div>
+          <button class="w3-btn w3-tiny w3-blue w3-border w3-border-blue w3-round-large w3-hover-blue"
+                  ui-sref="create_solutions_hub">
+            Create Your SOLUTION HUB
+          </button>
+          <br>
+          <br>
+          <button ng-if="vm.lounge_area_request.status == 'Pending'"
+                  class="w3-btn w3-tiny w3-red w3-border w3-border-red w3-round-large w3-hover-red"
+                  ng-click="vm.rejectRequest()" href="javascript:void(0)">Reject
+          </button>
+          <button ng-if="vm.lounge_area_request.status == 'Pending'"
+                  class="w3-btn w3-tiny w3-green w3-border w3-border-green w3-round-large w3-hover-green"
+                  ng-click="vm.acceptRequest()" href="javascript:void(0)">Join
+          </button>
+        </div>
+        <h3 style="margin-top: 30px">{{ vm.loungeAreaName }}</h3>
+        <div style="margin-top: 30px">
+          <div class="panel-group">
+            <div class="panel panel-default" ng-init="flag=true">
+              <div style="cursor: pointer; background-color: #c33; color: #ffffff" data-toggle="collapse"
+                   data-target="#collapse1" class="panel-heading"
+                   ng-click="flag ? flag = false : flag=true">
+                <h4 class="panel-title">
+                  Description<i ng-if="!flag" class="fa fa-caret-down pull-right" aria-hidden="true"></i>
+                  <i ng-if="flag" class="fa fa-caret-right pull-right" aria-hidden="true"></i>
+                </h4>
+              </div>
+              <div id="collapse1" class="panel-collapse collapse" ng-class="!flag ? 'in' : ''">
+                <div class="panel-body">{{ vm.loungeAreaDescription }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="panel-group" ng-if="vm.is_restricted">
+            <div class="panel panel-default" ng-init="flag=true">
+              <div style="cursor: pointer; background-color: #c33; color: #ffffff" data-toggle="collapse"
+                   data-target="#collapse2" class="panel-heading"
+                   ng-click="flag ? flag = false : flag=true">
+                <h4 class="panel-title">
+                  Members | <i class="fa fa-user-o" aria-hidden="true"></i>
+                  <span ng-if="vm.lounge_area_members.length != 0">{{ vm.lounge_area_members.length }}</span><i ng-if="!flag" class="fa fa-caret-down pull-right" aria-hidden="true"></i>
+                  <i ng-if="flag" class="fa fa-caret-right pull-right" aria-hidden="true"></i>
+                </h4>
+              </div>
+              <div id="collapse2" class="panel-collapse collapse" ng-class="!flag ? 'in' : ''">
+                <div class="panel-body">
+                  <form ng-submit="vm.addMember()" ng-if="vm.is_admin_user">
+                    <div class="form-group">
+                      <label for="add_member" style="color: #aaaaaa">ADD MEMBERS</label>
+                      <input type="email" name="add_member" class="form-control" ng-model="vm.add_member"
+                             placeholder="Enter Email Address">
+                    </div>
+                  </form>
+                  <span ng-repeat="member in vm.lounge_area_members"><img height="25" width="25"
+                                                                          src="{{ member.avatar }}">
+                        {{ member.first_name }} {{ member.last_name }} {{ member.name }}
+                        <br><br>
+                      </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div><br><br>
+      </div>
+        <b >Solutions Hubs</b><br><br>
+        <div class="">
+          <div class="nav-tabs-vertical">
+            <ul class="nav nav-tabs" role="tablist" style=" position: relative; z-index: 100;">
+              <li class="nav-item" >
+                <a class="nav-link " ng-class="vm.loungeAreaId == 1 ? 'active' : ''" title="Problem Solver Central"
+                   ui-sref="loungeArea({loungeAreaId: 1})"
+                   data-toggle="tab" data-target="#projects" role="tab" aria-expanded="true"
+                   style="color: #c33; padding: 0px 0px;"><b>
+                  # Problem Solver Central</b>
+                </a>
+              </li>
+              <li class="nav-item " ng-repeat="request in vm.lounge_area_requests">
+                <a class="nav-link " ng-class="vm.loungeAreaId == request.lounge_area.id ? 'active' : ''" title="{{ request.lounge_area.name }}"
+                   ui-sref="loungeArea({loungeAreaId: request.lounge_area.id})"
+                   data-toggle="tab" data-target="#projects" role="tab" aria-expanded="true"
+                   style="color: #c33; padding: 0px 0px;">#
+                  {{ request.lounge_area.name | limitTo:21}}<span ng-if="request.lounge_area.name.length > 21">...</span>
+                </a>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div ng-if="!vm.not_found" modal="vm.model_create_lounge" class="modal fade" id="model_create_lounge" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <form name="resource_form" ng-submit="create()" method="post" novalidate>
+          <div class="modal-header">
+            <button type="button" class="close" ng-click="vm.closeModelCreateLounge()">&times;</button>
+            <h4 class="modal-title">Create Solution Hub</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="name">Name*</label>
+                  <input type="text" class="form-control" id="name"
+                         ng-model="vm.name" placeholder="Lounge area name..." required>
+                </div>
+                <div class="form-group">
+                  <label for="description">Description*</label>
+                  <textarea rows="4" type="text" class="form-control" id="description"
+                            ng-model="vm.description" placeholder="Description..." required></textarea>
+                </div>
+                <fieldset style="border: 0" class="form-group form-inline"
+                          data-ng-repeat="email in vm.emails">
+                  <label for="email">Email</label>
+                  <input class="form-control" type="email"
+                         ng-model="email.email" name=""
+                         placeholder="Enter Email Address">
+                  <button class="remove btn-danger"
+                          ng-click="removeEmail(email)">-
+                  </button>
+                </fieldset>
+
+
+                <a style="cursor:pointer;" class="addEmails text-primary pull-right"
+                   ng-click="addNewEmail()">Add Email</a>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="vm.closeModelCreateLounge()">Cancel</button>
+            <input type="submit" value="Create" class="btn btn-success" ng-click="vm.create()"/>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="container" ng-if="vm.not_found">
+    <div class="row">
+      <div class="col-md-12 text-center" style="background-color: #DDDDDD;">
+        <div style="width: 100%; height: 500px;"><br><br><br><br><br><br>
+          <span class="text-primary" style="font-size: 1000%;">NOT FOUND</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,18 @@
+# .coveragerc to control coverage.py
+[run]
+branch = False
+
+source =
+    authentication,
+    SocialImpactNetwork
+
+omit =
+    */migrations/*,
+    */__init__.py,
+    */apps.py
+    */urls.py
+
+[report]
+
+[html]
+directory = htmlcov

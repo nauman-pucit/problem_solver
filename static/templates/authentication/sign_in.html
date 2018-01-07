@@ -1,0 +1,81 @@
+<style>
+  body {
+    background-color: #EEEEEE;
+  }
+</style>
+<section class="page-content">
+  <div class="page-content-inner" style="background-image: url(/static/admin-common/img/temp/login/4.jpg)">
+
+    <!-- Login Omega Page -->
+
+    <div class="single-page-block">
+      <div class="single-page-block-inner effect-3d-element">
+        <div class="blur-placeholder"><!-- --></div>
+        <div class="single-page-block-form">
+          <h3 class="text-center">
+            <i class="icmn-enter margin-right-10"></i>
+            Login
+          </h3>
+          <br/>
+          <form id="form-validation" ng-submit="submit(signinForm)" name="form-validation" method="POST">
+            <div class="form-group">
+              <input id="validation-email"
+                     class="form-control"
+                     placeholder="Email..."
+                     name="user_name"
+                     type="email"
+                     data-validation="[EMAIL]"
+                     ng-model="user_name"
+                     required
+              >
+
+            </div>
+            <div class="form-group">
+              <input id="validation-password"
+                     class="form-control password"
+                     name="password"
+                     type="password" data-validation="[L>=6]"
+                     data-validation-message="$ must be at least 6 characters"
+                     placeholder="Password..."
+                     ng-model="password"
+                     required
+              >
+
+            </div>
+            <div ng-show="login_error" class="text-danger small pull-right">wrong email or password</div>
+            <div class="form-group">
+              <div class="social-login">
+                <span class="">Use another service to Log In</span>
+                <div class="social-container pull-right">
+                  <a href="/accounts/google/login/?process=login" class="btn btn-icon">
+                    <i class="icmn-google"></i>
+                  </a>
+                  <a href="/accounts/linkedin/login/?process=login" class="btn btn-icon">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" id="submit" style="width: 40%"
+                      class="w3-btn w3-white w3-border w3-border-white w3-round-large w3-hover-grey">Sign In</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- End Login Omega Page -->
+
+  </div>
+
+  <!-- Page Scripts -->
+  <script>
+    $(function () {
+
+      $('body').addClass('single-page single-page-inverse');
+
+    });
+  </script>
+  <!-- End Page Scripts -->
+</section>

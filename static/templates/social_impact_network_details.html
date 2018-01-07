@@ -1,0 +1,115 @@
+<style>
+  .alignRight {
+    width: 80%;
+    margin-left: 20px;
+  }
+  body {
+    background-color: #3D3A4D;
+    min-height:100%;
+    height:auto;
+  }
+  .position-fixed{
+    position: fixed;
+    height: 78%;
+  }
+</style>
+
+<section ng-controller="NetworkDetailController as vm">
+
+  <div class="container ">
+
+    <div class="row" style="margin-top: 150px">
+
+      <div class="col-md-12 ">
+        <div class="row well">
+
+          <div class="col-md-12 text-center">
+            <h2 class="section-heading">{{ vm.networkName | uppercase}}</h2>
+            <hr class="primary">
+          </div>
+          <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+              <img class="w3-round-large" style="width: 100%; height: 200px" src="{{ vm.contact.image }}">
+            </div>
+          </div>
+          <div style="margin-top: 30px" class="row">
+            <div class="col-md-10 col-md-offset-1">
+              <b>Description: </b>{{ vm.networkDescription }}
+            </div>
+          </div>
+
+          <div style="margin-top: 10px" class="row">
+            <div class="col-md-10 col-md-offset-1">
+              <div class="row">
+                <div class="col-md-4">
+                  <b>Geographical Area:</b>
+                </div>
+                <div class="col-md-8">
+                  <div class="col-md-12">
+                <span ng-if="vm.countries.length != 252" ng-repeat="country in vm.countries"><b>{{ country.name }}</b>
+                  (<span ng-if="vm.cities.length == 0">NationWide</span><span ng-if="city.country == country.id"
+                                                                              ng-repeat="city in vm.cities">{{ city.name }}<span ng-if="!$last">,</span></span>)<br>
+                </span>
+                    <span ng-if="vm.countries.length == 252"><b>Worldwide</b></span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+              <h4 class="text-primary">Offered By:</h4>
+            </div>
+          </div>
+
+          <div class="row" ng-if="vm.anonymity == false">
+            <div class="col-md-10 col-md-offset-1">
+              Name: {{ vm.first_name }} {{ vm.last_name }}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+              Designation: {{ vm.designation }}
+            </div>
+          </div>
+          <div ng-if="!vm.contact.anonymity">
+            <div class="row">
+              <div class="col-md-10 col-md-offset-1">
+                <h4 class="text-primary">Contact Person Information:</h4>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-10 col-md-offset-1">
+                <b>Contact person name:</b> {{ vm.contact.contact_name }}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-10 col-md-offset-1">
+                <b>Contact description:</b> {{ vm.contact.contact_description }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-10 col-md-offset-1">
+                <span class="text-primary"><b>Organizations</b></span> : <span
+                  ng-repeat="organization in vm.organizations">{{ organization.affiliation }}, </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+

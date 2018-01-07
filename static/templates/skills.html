@@ -1,0 +1,197 @@
+<style>
+  body {
+    background-color: #EEEEEE;
+    min-height: 100%;
+    height: auto;
+  }
+
+  .multiselect-parent .dropdown-toggle {
+    width: 565px;
+  }
+
+  .multiselect-parent .dropdown-menu {
+    width: 565px;
+  }
+</style>
+
+<div ng-controller="AddSkillController as vm">
+  <div class="container">
+    <div class="row" style="margin-top: 60px">
+      <div class="col-lg-11 col-md-11 col-sm-8 col-xs-9 bhoechie-tab-container">
+
+        <div class="col-md-12">
+
+          <h2 class="text-primary well"><b>Skills</b>
+            <button class="btn btn-primary pull-right" ui-sref="add_skills" data-target="#">Pledge New Skill
+            </button>
+          </h2>
+
+        </div>
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bhoechie-tab">
+          <!-- flight section -->
+          <div class="bhoechie-tab-content active">
+            <center>
+              <table class="table table-responsive">
+                <thead>
+                <tr>
+                  <th style="width: 15%">Skill Name</th>
+                  <th>Description</th>
+                  <th>Level</th>
+                  <th>Details</th>
+                  <th>Edit</th>
+                  <th>Remove</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="skill in vm.all_user_skills">
+                  <td>{{ skill.skill_name }}</td>
+                  <td>{{ skill.skill_description }}</td>
+                  <td>{{ skill.skill_level | uppercase}}</td>
+                  <td class="text-primary"><a ui-sref="skillDetail({skillId: skill.id})" href="javascript:void(0)">Details</a></td>
+                  <td><i style="cursor: pointer" ng-click="vm.showModalEditSkill(skill)"
+                         class="text-primary fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></td>
+                  <td><i style="cursor: pointer" ng-click="vm.showDeleteSkillModal(skill)"
+                         class="text-primary fa fa-times fa-2x" aria-hidden="true"></i></td>
+                </tr>
+
+                </tbody>
+              </table>
+            </center>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div modal="vm.ModalEditSkill" class="modal fade bd-edit-skill-modal-sm" id="edit_skill_model" tabindex="-1"
+         role="dialog"
+         aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content">
+          <form name="resource_form" ng-submit="edit_skill()" method="post" novalidate>
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" ng-click="vm.closeModalEditSkill()"
+                      aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">Edit Skill</h4>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="network_name">Skill Name*</label>
+                    <input type="text" class="form-control" id="skill_name"
+                           ng-model="skill_name" placeholder="Skill name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="skill_description">Description*</label>
+                    <textarea rows="4" type="text" class="form-control" id="skill_description"
+                           ng-model="skill_description" placeholder="Description..." required></textarea>
+                  </div>
+                </div>
+
+                  <div class="form-group">
+                    <div class="col-md-5">
+                      <label for="skill_level">Skill Level*</label>
+                    </div>
+                    <div class="col-md-7">
+                      <input type="radio" id="skill_level" name="{{ skill.id }}" value="beginner"
+                             ng-model="skill_level"> Beginner
+                      <input type="radio" id="skill_level" name="{{ skill.id }}" value="experienced"
+                             ng-model="skill_level"> Experienced
+                      <input type="radio" id="skill_level" name="{{ skill.id }}" value="expert"
+                             ng-model="skill_level"> Expert
+                    </div>
+                  </div>
+                <div class="col-md-12">
+                  <h5 class="text-primary">Geographical area</h5>
+
+                  <div class="form-group form-inline">
+                    <label for="country">Country*</label>
+                    <div events="get_cities" id="country" ng-dropdown-multiselect="" options="country_data"
+                         selected-model="country_model"
+                         extra-settings="country_settings" translation-texts="country_settings_text"></div>
+                  </div>
+                  <div class="form-group" ng-hide="cities_drop_down">
+                    <label for="city">City*</label>
+                    <div events="cities_event" id="city" ng-dropdown-multiselect="" options="city_data"
+                         selected-model="city_model"
+                         extra-settings="city_settings" translation-texts="city_settings_text"></div>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_name">Contact person name*</label>
+                    <input type="text" class="form-control" id="contact_name"
+                           ng-model="contact_name" placeholder="Contact person name..." required>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_person_email">Email*</label>
+                    <input type="email" class="form-control" id="contact_person_email"
+                           ng-model="contact_email" placeholder="Contact person email..." required>
+                    <span class="small text-info">your email address will not be made public</span>
+                  </div>
+                  <div class="form-group">
+                    <label for="contact_description">About Me*</label>
+                    <textarea type="text" class="form-control" id="contact_description"
+                              ng-model="contact_description" placeholder="Description..." required></textarea>
+                  </div>
+                  <div class="form-group form-inline">
+                    <label for="anonymity">Anonymity</label>
+                    <input style="margin-left: 14px" type="checkbox" id="anonymity" ng-model="contact_anonymity"><br>
+                    <span class="small text-info">
+                      tick if you want to remain anonymous and would like us to moderate messages before sending to you
+                    </span>
+                  </div>
+                  <fieldset style="border: 0" class="form-group form-inline"
+                            data-ng-repeat="orgnaization in orgnaizations">
+                    <label for="organization">Organization</label>
+                    <input class="form-control organization" type="text"
+                           ng-model="orgnaization.name" name=""
+                           placeholder="Enter Organization Name">
+                    <button class="remove btn-danger"
+                            ng-click="removeEditOrgnaization(orgnaization)">-
+                    </button>
+                  </fieldset>
+
+
+                  <a style="cursor:pointer;" class="addOrgnaizations text-primary pull-right"
+                     ng-click="addNewEditOrgnaization()">Add organization</a>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" ng-click="vm.closeModalEditSkill()">Close</button>
+              <input type="submit" value="Update Skill" class="btn btn-primary" id="submit">
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+    <div modal="vm.confirmDeleteSkillModal" class="modal fade" id="confirmDeleteSkillModal" role="dialog">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" ng-click="vm.closeDeleteSkillModal()">&times;</button>
+            <h4 class="modal-title">Delete Skill</h4>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to delete skill?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="vm.closeDeleteSkillModal()">Cancel</button>
+            <button type="button" class="btn btn-danger" ng-click="deleteSkill()"
+                    data-dismiss="modal">Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

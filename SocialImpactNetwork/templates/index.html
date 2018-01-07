@@ -1,0 +1,172 @@
+{% extends 'base_.html' %}
+{% block title %}Problem Solver Central{% endblock %}
+{% block body %}
+
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">Problem Solver Central</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul id="nav_links" class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="#about">About</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#services">Stats</a>
+                    </li>
+{#                    <li>#}
+{#                        <a class="page-scroll" href="#portfolio">Portfolio</a>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <a class="page-scroll" href="#contact">Contact</a>#}
+{#                    </li>#}
+                    {% if "user" in request.session %}
+                        <li id="logout_id">
+                            <a  class="page-scroll" href="log_out/">Logout</a>
+                        </li>
+                    {% else %}
+                        <li id="sign1">
+                        <a class="page-scroll" href="#signIn" data-toggle="modal" data-target=".bd-example-modal-sm">Sign In</a>
+                        </li>
+                        <li id="sign2">
+                            <a class="page-scroll" href="sign_up/">Sign Up</a>
+                        </li>
+                    {% endif %}
+
+
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                <h1 id="homeHeading">Problem Solver Central</h1>
+                <hr>
+                <p>A platform for matching problems with potential solvers and manufacturers
+                  !</p>
+                {% if "user" in request.session %}
+                    <a href="pledge_resources/" id="pledge_resources_btn" class="btn btn-primary btn-xl page-scroll">Pledge Resources</a>
+                {% else %}
+                    <a href="sign_up/" id="pledge_resources_btn" class="btn btn-primary btn-xl page-scroll">Sign Up</a>
+                {% endif %}
+
+            </div>
+        </div>
+    </header>
+
+    <section class="bg-primary" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">We've got what you need!</h2>
+                    <hr class="light">
+                    <p class="text-faded">A platform to match problems with potential solvers and manufacturers!</p>
+                    <a href="#" class="page-scroll btn btn-default btn-xl sr-button">Get Started!</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade bd-example-modal-sm" id="sign_in_model" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-md">
+        <div class="modal-content"  ng-controller="logInController">
+            <form name="signinForm" ng-submit="submit()" method="post"> {% csrf_token %}
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Sign In</h4>
+                  </div>
+                  <div class="modal-body" >
+
+                        <div class="form-group">
+                          <label for="emailaddress">Email Address</label>
+                          <input type="email" ng-model="user_name" class="form-control" id="user_name" placeholder="Email...">
+                        </div>
+                        <div class="form-group">
+                          <label for="password">Password</label>
+                          <input type="password" ng-model="password" class="form-control" id="password" placeholder="Password...">
+                        </div>
+                        <div id="login_error" class="text-danger small"></div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group pull-right">
+                                    <button style="background-color: #3b5998" type="button"  class="btn btn-primary disabled"><i class="fa fa-facebook-official" aria-hidden="true"></i> Login with Facebook</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group pull-right" >
+                                    <button type="button" style="width: 205px; background-color: #427EEC" class="btn btn-danger disabled"><i class="fa fa-google" aria-hidden="true"></i> Login with Google</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group pull-right">
+                                    <button type="button" style="width: 205px; background-color: #0077B5" class="btn btn-info disabled"><i class="fa fa-linkedin-square" aria-hidden="true"></i> Login with LinkedIn</button>
+                                </div>
+                            </div>
+                        </div>
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <input type="submit" value="Sign In" class="btn btn-primary" id="submit" >
+                  </div>
+            </form>
+        </div>
+
+      </div>
+    </div>
+
+    <section id="services">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Stats</h2>
+                    <hr class="primary">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+              <div class="col-md-2"></div>
+              <div class="col-md-4 text-center">
+                <div class="service-box">
+                    <i class="fa fa-4x fa-users text-primary sr-icons"></i>
+                    <h3>Community Members:</h3>
+                    <p class="text-muted">1,202,716</p>
+                </div>
+              </div>
+              <div class="col-md-4 text-center">
+                <div class="service-box">
+                    <i class="fa fa-4x fa-pencil-square-o text-primary sr-icons"></i>
+                    <h3>Total Contribution:</h3>
+                    <p class="text-muted">2,058,987</p>
+                </div>
+              </div>
+              <div class="col-md-2"></div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+
+
+

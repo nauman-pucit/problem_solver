@@ -1,0 +1,33 @@
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-controller="NavbarController as vm">
+    <ul id="nav_links" class="nav navbar-nav navbar-right">
+        <li>
+            <a class="page-scroll" href="#search">Search</a>
+        </li>
+        <li>
+            <a class="page-scroll" href="#about">About</a>
+        </li>
+        <li>
+            <a class="page-scroll" href="#services">Stats</a>
+        </li>
+        {% if "user" in request.session %}
+            <li>
+                <a ui-sref="all_user_projects" data-target="#">Pledge Resources</a>
+            </li>
+            <li id="logout_id">
+                <a class="page-scroll" href="javascript:void(0)" ng-click="vm.logout()">Logout</a>
+            </li>
+        {% else %}
+            <li id="pledge_nav_link" class="hidden">
+                <a ui-sref="all_user_projects" data-target="#">Pledge Resources</a>
+            </li>
+            <li id="sign1">
+                <a class="page-scroll" href="#signIn" data-toggle="modal"
+                   data-target=".bd-example-modal-sm">Sign In</a>
+            </li>
+            <li id="sign2">
+                <a ui-sref="sign_up">Sign Up</a>
+            </li>
+        {% endif %}
+
+    </ul>
+</div>

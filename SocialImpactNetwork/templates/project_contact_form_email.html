@@ -1,0 +1,9 @@
+Following are the answers for {{ project_name }}
+
+{% for question in questions %}
+  <p>
+    <b>{{ question.question }}</b><br>
+    <p>{{ question.answer }}</p><br>
+    <br>
+  </p>
+{% endfor %}

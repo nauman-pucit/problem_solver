@@ -1,0 +1,136 @@
+<style>
+  body {
+    background-color: #EEEEEE;
+    min-height: 100%;
+    height: auto;
+  }
+</style>
+<script>
+  $(document).ready(function ($) {
+    $('#phone').mask('999 999 9999');
+    $('#zip').mask("99999?-9999");
+  });
+</script>
+<section class="page-content">
+  <div class="page-content-inner" style="background-image: url(/static/admin-common/img/temp/login/2.jpg)">
+
+    <!-- Register Page -->
+    <div class="single-page-block" style="padding-top: 110px">
+      <div class="single-page-block-inner effect-3d-element">
+        <div class="blur-placeholder"><!-- --></div>
+        <div class="single-page-block-form">
+          <h3 class="text-center">
+            <i class="icmn-users margin-right-10"></i>
+            Register
+          </h3>
+          <br/>
+          <form id="form-validation" name="signupForm" ng-submit="submit()" method="POST">
+            <div class="form-group">
+              <div class="form-input-icon form-input-icon-right">
+                <input id="firstname"
+                       ng-model="user.first_name"
+                       class="form-control"
+                       placeholder="First name..."
+                       name="first_name"
+                       type="text"
+                       validator="required"
+                       valid-method="blur">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-input-icon form-input-icon-right">
+                <input id="lastname"
+                       ng-model="user.last_name"
+                       class="form-control"
+                       placeholder="Last Name..."
+                       name="last_name"
+                       type="text"
+                       validator="required"
+                       valid-method="blur">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="form-input-icon form-input-icon-right">
+                <input id="validation-email"
+                       class="form-control"
+                       ng-model="user.email"
+                       placeholder="Enter email"
+                       required
+                       name="email"
+                       ng-blur="checkEmail($event)"
+                       type="email"
+                >
+
+                <p ng-show="emailMatchError" id="emailMatchError" class="text-danger small">
+                  email already exist</p>
+                <p ng-show="emailError" id="emailMatchError" class="text-danger small">
+                  valid email required</p>
+
+              </div>
+            </div>
+            <div class="form-group">
+              <input id="password1"
+                     ng-model="user.password"
+                     class="form-control password"
+                     name="validation[password]"
+                     type="password"
+                     validator="required"
+                     valid-method="blur"
+                     placeholder="Password">
+            </div>
+            <div class="form-group" >
+              <div class="col-md-6">
+                <div ng-if="is_support_user" class="form-group1 form-inline">
+                  <label for="moderation">Moderation</label>
+                  <input type="checkbox" id="moderation" ng-model="user.moderation"><br>
+                  <span class="small">Want admin to moderate your requests</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div ng-if="is_support_user" class="form-group1 form-inline">
+                  <label for="anonymity">Anonymity</label>
+                  <input type="checkbox" id="anonymity" ng-model="user.anonymity"><br>
+                  <span class="small">Want admin to be an anonymous user<br><br></span>
+                </div>
+              </div>
+            </div>
+            <div ng-show="login_error" class="text-danger small">wrong email or password</div>
+            <div class="form-group" >
+              <div class="social-login" >
+                <span class="">Use another service to Log In</span>
+                <div class="social-container pull-right">
+                  <a href="/accounts/google/login/?process=login" class="btn btn-icon">
+                    <i class="icmn-google"></i>
+                  </a>
+                  <a href="/accounts/linkedin/login/?process=login" class="btn btn-icon">
+                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" style="width: 40%"
+                      class="w3-btn w3-white w3-border w3-border-white w3-round-large w3-hover-grey">Sign Up
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- End Register Page -->
+
+  </div>
+
+  <!-- Page Scripts -->
+  <script>
+
+    $(function () {
+
+      $('body').addClass('single-page single-page-inverse');
+
+    });
+
+  </script>
+  <!-- End Page Scripts -->
+</section>
+

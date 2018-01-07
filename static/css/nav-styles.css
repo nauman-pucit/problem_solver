@@ -1,0 +1,20 @@
+.nav-links {
+    text-decoration: none;
+    color: #ffffff
+
+}
+.nav-links:hover {
+    text-decoration: none;
+    color: #dddddd;
+}
+.nav-links:visited {
+    text-decoration: none;
+    color: #ffffff;
+}
+.nav-links-dropdown:hover  {
+    text-decoration: none;
+    color: #A6A37C;
+}
+.cwt__block-title:before{
+    width: 0%;
+}

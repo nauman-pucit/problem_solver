@@ -1,0 +1,330 @@
+<style>
+  .alignRight {
+    width: 80%;
+    margin-left: 20px;
+  }
+
+  body {
+    background-color: #3D3A4D;
+    min-height: 100%;
+    height: auto;
+  }
+
+</style>
+<script>
+  $(document).ready(function ($) {
+    $('#phone').mask('999 999 9999');
+    $('#zip').mask("99999?-9999");
+  });
+</script>
+<div class="container " ng-controller="UserProfileEditController">
+  <div style="margin-top: 150px" class="page-content-inner">
+
+    <!-- Profile Header -->
+    <nav class="top-submenu top-submenu-with-background">
+      <div class="profile-header">
+        <div class="profile-header-info">
+          <div class="row">
+            <div class="col-md-8 col-md-offset-4">
+              <div class="width-100 text-center pull-right hidden-md-down" style="margin-left: 30px">
+                <h2>{{ all_projects.length }}</h2>
+                <p>Projects</p>
+              </div>
+              <div class="width-100 text-center pull-right hidden-md-down">
+                <h2>{{ all_networks.length }}</h2>
+                <p>Networks</p>
+              </div>
+              <div class="profile-header-title">
+                <h2>{{ full_name | uppercase }}
+                  <small>@{{ user.orgnaization }}</small>
+                </h2>
+                <p>{{ user.designation }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- End Profile Header -->
+
+    <!-- Profile -->
+    <div class="row">
+      <div class="col-md-4">
+        <section class="panel profile-user" style="background-image: url(/static/admin-common/img/temp/photos/4.jpeg)">
+          <div class="panel-body">
+            <div class="profile-user-title text-center">
+              <a class="avatar" data-target="#">
+                <img src="{{ user.avatar }}" alt="">
+              </a>
+              <br/>
+              <div class="btn-group btn-group-justified  text-center" aria-label="" role="group">
+                <div class="btn-group">
+                  <button type="button"  ui-sref="edit_user_profile"
+                          class="btn width-150 w3-btn  w3-blue w3-border w3-border-blue w3-round-large w3-hover-white">
+                    Edit Profile</button>
+                </div>
+              </div>
+              <br/>
+              <p>Last activity: {{ user.last_login | date:'MM/dd/yyyy hh:mm' }}</p>
+              <p>
+                <span class="donut donut-success"></span>
+                {{ user.country }}
+              </p>
+            </div>
+          </div>
+        </section>
+        <section class="panel">
+          <div class="panel-body">
+            <div class="profile-user-skills">
+              <table class="table table-hover">
+                <caption class="text-primary">Skills</caption>
+                <tr href="javascript:void(0)" ng-repeat="skill in all_skills">
+                  <th>{{ skill.skill_name }}</th>
+                  <td>
+                    <progress ng-if="skill.skill_level == 'beginner'" class="progress progress-danger" value="33"
+                              max="100">33%
+                    </progress>
+                    <progress ng-if="skill.skill_level == 'experienced'" class="progress progress-primary" value="66"
+                              max="100">66%
+                    </progress>
+                    <progress ng-if="skill.skill_level == 'expert'" class="progress progress-success" value="100"
+                              max="100">
+                      100%
+                    </progress>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="col-md-8">
+        <section class="panel profile-user-content">
+          <div class="panel-body">
+            <div class="nav-tabs-horizontal">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" href="javascript: void(0);" data-toggle="tab" data-target="#posts"
+                     role="tab">
+                    <i class="icmn-menu3"></i>
+                    Personal Information
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="javascript: void(0);" data-toggle="tab" data-target="#projects" role="tab">
+                    <i class="fa fa-cubes" aria-hidden="true"></i>
+                    Projects
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="javascript: void(0);" data-toggle="tab" data-target="#networks" role="tab">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    Networks
+                  </a>
+                </li>
+              </ul>
+              <div class="tab-content padding-vertical-20">
+                <div class="tab-pane active" id="posts" role="tabpanel">
+                  <div class="user-wall">
+                    <table class="table ">
+                      <tr>
+                        <td colspan="2">
+                          <span style="cursor: pointer" class="text-primary pull-right" ui-sref="edit_user_profile">Edit Personal Information</span>
+                        </td>
+                      </tr>
+                      <tr ng-if="user.phone">
+                        <th>Phone</th>
+                        <td>{{ user.phone }}</td>
+                      </tr>
+                      <tr ng-if="user.orgnaization">
+                        <th>Orgnaization</th>
+                        <td>{{ user.orgnaization }}</td>
+                      </tr>
+                      <tr ng-if="user.designation">
+                        <th>Designation</th>
+                        <td>{{ user.designation }}</td>
+                      </tr>
+                      <tr ng-if="user.designation">
+                        <th>Address</th>
+                        <td>{{ user.address1 }}, {{ user.address2 }}</td>
+                      </tr>
+                      <tr ng-if="user.country">
+                        <th>Country</th>
+                        <td>{{ user.country }}</td>
+                      </tr>
+                      <tr ng-if="user.state">
+                        <th>State/Province</th>
+                        <td>{{ user.state }}</td>
+                      </tr>
+                      <tr ng-if="user.city">
+                        <th>City</th>
+                        <td>{{ user.city }}</td>
+                      </tr>
+                      <tr ng-if="user.zipcode">
+                        <th>Zip/Postal Code</th>
+                        <td>{{ user.zipcode }}</td>
+                      </tr>
+                      <tr ng-if="user.geographical_area">
+                        <th>Geographical Area</th>
+                        <td>{{ user.geographical_area }}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <div class="tab-pane" id="projects" role="tabpanel">
+                  <div class="conversation-block">
+                    <table  class="table table-hover">
+                      <tr style="cursor: pointer" ui-sref="projectDetail({projectId: project.id})"
+                          href="javascript:void(0)" ng-repeat="project in all_projects">
+                        <th>{{ project.project_name }}</th>
+                        <td>{{ project.project_description }}</td>
+                      </tr>
+                    </table>
+
+                  </div>
+                </div>
+                <div class="tab-pane" id="networks" role="tabpanel">
+                  <table  class="table table-hover">
+                      <tr style="cursor: pointer" ui-sref="networkDetail({networkId: network.id})"
+                          href="javascript:void(0)" ng-repeat="network in all_networks">
+                        <th>{{ network.network_name }}</th>
+                        <td>{{ network.network_description }}</td>
+                      </tr>
+                    </table>
+                  <br/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <!-- End Profile -->
+
+  </div>
+  <div class="row hidden">
+    <!-- code start -->
+    <div class="twPc-div">
+      <a class="twPc-bg twPc-block"></a>
+      <div class="pull-right">
+        <input type="button" value="Edit Profile" class="btn btn-primary" ui-sref="edit_user_profile" data-target="#">
+      </div>
+
+      <a title="" class="text-center twPc-avatarLink">
+        <img class="twPc-avatarImg" src="{{ user.avatar }}">
+      </a>
+
+      <div class="twPc-divUser">
+        <div class="twPc-divName">
+          <a href="https://twitter.com/mertskaplan">{{ full_name | uppercase }}</a>
+        </div>
+        <span>
+				<span class="text-primary">{{ user.email }}</span>
+			</span>
+      </div>
+      <div class="row" style="margin-top: 70px">
+        <div class="col-md-6 col-md-offset-1">
+          <table class="table ">
+            <caption class="text-primary">Personal Information</caption>
+            <tr ng-if="user.phone">
+              <th>Phone</th>
+              <td>{{ user.phone }}</td>
+            </tr>
+            <tr ng-if="user.orgnaization">
+              <th>Orgnaization</th>
+              <td>{{ user.orgnaization }}</td>
+            </tr>
+            <tr ng-if="user.designation">
+              <th>Designation</th>
+              <td>{{ user.designation }}</td>
+            </tr>
+            <tr ng-if="user.designation">
+              <th>Address</th>
+              <td>{{ user.address1 }}, {{ user.address2 }}</td>
+            </tr>
+            <tr ng-if="user.country">
+              <th>Country</th>
+              <td>{{ user.country }}</td>
+            </tr>
+            <tr ng-if="user.state">
+              <th>State/Province</th>
+              <td>{{ user.state }}</td>
+            </tr>
+            <tr ng-if="user.city">
+              <th>City</th>
+              <td>{{ user.city }}</td>
+            </tr>
+            <tr ng-if="user.zipcode">
+              <th>Zip/Postal Code</th>
+              <td>{{ user.zipcode }}</td>
+            </tr>
+            <tr ng-if="user.geographical_area">
+              <th>Geographical Area</th>
+              <td>{{ user.geographical_area }}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-5">
+          <div class="sample" layout="column" ng-cloak>
+            <md-content class="md-padding">
+              <md-tabs md-selected="selectedIndex" style="min-height: 350px;" md-border-bottom md-autoselect>
+                <md-tab ng-repeat="tab in tabs"
+                        ng-disabled="tab.disabled"
+                        label="{{ tab.title }}">
+                  <div>
+                    <table ng-if="tab.title == 'Projects'" class="table table-hover">
+                      <tr style="cursor: pointer" ui-sref="projectDetail({projectId: project.id})"
+                          href="javascript:void(0)" ng-repeat="project in all_projects">
+                        <th>{{ project.project_name }}</th>
+                        <td>{{ project.project_description }}</td>
+                      </tr>
+                    </table>
+                    <table ng-if="tab.title == 'Networks'" class="table table-hover">
+                      <tr style="cursor: pointer" ui-sref="networkDetail({networkId: network.id})"
+                          href="javascript:void(0)" ng-repeat="network in all_networks">
+                        <th>{{ network.network_name }}</th>
+                        <td>{{ network.network_description }}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </md-tab>
+              </md-tabs>
+            </md-content>
+
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="twPc-divStats">
+        <div class="row ">
+          <div class=" col-md-10 col-md-offset-1 ">
+            <ul class="twPc-Arrange">
+              <li class="twPc-ArrangeSizeFit w3-light-grey w3-hover-shadow w3-padding-64 w3-center">
+                <a ui-sref="all_user_projects" data-target="#" style="cursor: pointer;">
+                  <span class="twPc-StatLabel twPc-block">Resources</span>
+                  <span class="twPc-StatValue">{{ all_projects.length + all_networks.length }}</span>
+                </a>
+              </li>
+              <li class="twPc-ArrangeSizeFit w3-light-grey w3-hover-shadow w3-padding-64 w3-center">
+                <a ui-sref="all_user_projects" data-target="#" style="cursor: pointer;">
+                  <span class="twPc-StatLabel twPc-block">Projects</span>
+                  <span class="twPc-StatValue">{{ all_projects.length }}</span>
+                </a>
+              </li>
+              <li class="twPc-ArrangeSizeFit w3-light-grey w3-hover-shadow w3-padding-64 w3-center">
+                <a ui-sref="all_user_projects" data-target="#" style="cursor: pointer;">
+                  <span class="twPc-StatLabel twPc-block">Networks</span>
+                  <span class="twPc-StatValue">{{ all_networks.length }}</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

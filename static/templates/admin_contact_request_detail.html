@@ -1,0 +1,67 @@
+<style>
+  .alignRight {
+    width: 80%;
+    margin-left: 20px;
+  }
+</style>
+
+<div ng-controller="ModerateController as vm">
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Project: {{ vm.projectDetail.question.project.project_name }}</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <b>Description: </b>{{ vm.projectDetail.question.project.project_description }}
+    </div>
+  </div>
+
+  <div class="row">
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <h4>Offered By</h4>
+    </div>
+  </div>
+
+  <div class="row" ng-if="!vm.contactResponse.question.project.resource.resource_user.anonymity">
+    <div class="col-md-4">
+      Name: {{ vm.projectDetail.question.project.resource.resource_user.first_name }} {{ vm.projectDetail.question.project.resource.resource_user.last_name }}
+    </div>
+  </div>
+<!--
+  <div class="row">
+    <div class="col-md-4">
+      Designation: {{ vm.contactResponse.question.project.resource.resource_user.designation }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      Location: {{ vm.city }} {{ vm.state }}, {{ vm.country }}
+    </div>
+  </div>
+-->
+  <h3 class="text-center">Contact Request from {{ vm.projectDetail.user.first_name }} {{ vm.projectDetail.user.last_name }}</h3>
+
+    <div class="row" ng-repeat="response in vm.contactResponse track by $index">
+      <div class="form-group alignRight">
+        <label>Q: {{ response.question.question }}</label>
+        <!-- <textarea class="form-control" rows="3" ng-model="vm.answers[$index]" ng-if="vm.isAdmin">
+          {{ response.answer }}
+        </textarea> -->
+        <p >{{ response.answer }}</p>
+      </div>
+
+    </div>
+    <div class="row" ng-if="vm.isAdmin" style="margin-bottom: 5px">
+      <div class="col-md-5 col-md-offset-7">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.submit('Rejected')">Reject</button>
+        <button type="button" class="btn btn-primary" ng-click="vm.submit('Approved')"
+                data-dismiss="modal">Approve
+        </button>
+      </div>
+    </div>
+</div>

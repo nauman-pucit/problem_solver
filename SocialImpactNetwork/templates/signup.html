@@ -1,0 +1,173 @@
+{% extends 'base_.html' %}
+
+{% block title %}Sign Up{% endblock %}
+{% block body %}
+    <style>
+        body {
+            background-color: #F05F40;
+        }
+    </style>
+    <script>
+        $(document).ready(function ($) {
+            $('#phone').mask('999 999 9999');
+            $('#zip').mask("99999?-9999");
+        });
+    </script>
+    <nav id="mainNav" class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="/social_network/">Problem Solver Central</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="/social_network/">About</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="/social_network/">Stats</a>
+                    </li>
+                    {% if "user" in request.session %}
+                        <li id="logout_id">
+                            <a class="page-scroll" href="/social_network/log_out/">Logout</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid style="; padding-top: 70px; " -->
+    </nav>
+
+
+    {% if "user" in request.session %}
+
+        <div class="row">
+            <div style="margin-top:60px " class="col-md-12 well">
+                <h1 class="text-info"> page not found</h1>
+            </div>
+        </div>
+    {% else %}
+        <section id="signUp">
+            <div class="container ">
+
+                <div class="row">
+
+                    <div class="col-lg-1"></div>
+                    <div class="col-lg-10 " ng-controller="signUpControler">
+                        <div class="row well">
+                            <form name="signupForm" ng-submit="submit()" method="post"> {% csrf_token %}
+                                <div class="col-md-12 text-center">
+                                    <h2 class="section-heading">Sign Up</h2>
+                                    <hr class="primary">
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="firstname">First Name*</label>
+                                        <input type="text" class="form-control" id="firstname" ng-model="firstname"
+                                               placeholder="First name..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastname">Last Name*</label>
+                                        <input type="text" class="form-control" id="lastname" ng-model="lastname"
+                                               placeholder="Last Name..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email address*</label>
+                                        <input type="email" class="form-control" id="email" ng-blur="checkEmail($event)"
+                                               ng-model="email" placeholder="Enter email" required>
+                                        <p id="emailMatchError" class="text-danger small" ng-model="validateEmail"></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password1">Password*</label>
+                                        <input type="password" class="form-control" id="password1" ng-model="password1"
+                                               placeholder="Password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password2">Confirm Password*</label>
+                                        <input type="password" class="form-control" id="password2"
+                                               ng-blur="checkPassword($event)" ng-model="password2"
+                                               placeholder=" Confirm Password" required pw-check='password1'>
+                                        <p id="pwdMatchError" class="text-danger small" ng-model="validatePassword"></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone*</label>
+                                        <input type="text" class="form-control" maxlength="15" id="phone"
+                                               ng-model="phone" placeholder="XXX XXX XXXX" required>
+                                        <p id="phoneError" class="text-danger small" ng-model="validatePassword"></p>
+                                        {#                          ng-keyup="validate($event)"#}
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="designation">Orgnaization*</label>
+                                        <input type="text" class="form-control" id="orgnaization"
+                                               ng-model="orgnaization" placeholder="Orgnaization..." required>
+                                    </div>
+
+
+                                </div>
+                                <div class="col-md-2"></div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label for="designation">Designtion*</label>
+                                        <input type="text" class="form-control" id="designamtion"
+                                               ng-model="designamtion" placeholder="Designation..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address1">Address Line 1*</label>
+                                        <input type="text" class="form-control" id="address1" ng-model="address1"
+                                               placeholder="Address Line 1..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="address2">Address Line 2</label>
+                                        <input type="text" class="form-control" id="address2" ng-model="address2"
+                                               placeholder="Address Line 2...">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="country">Country*</label>
+                                        <input type="text" class="form-control" id="country" ng-model="country"
+                                               placeholder="Country..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="state">State/Province*</label>
+                                        <input type="text" class="form-control" id="state" ng-model="state"
+                                               placeholder="State/Province ..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="city">City*</label>
+                                        <input type="text" class="form-control" id="city" ng-model="city"
+                                               placeholder="City..." required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="zip">Zip/Postal code*</label>
+                                        <input type="text" class="form-control" id="zip" ng-model="zip"
+                                               placeholder="XXXXXX" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group text-center">
+
+                                        <input type="submit" value="Join Now" class="btn btn-primary" id="submit">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </section>
+    {% endif %}
+
+
+{% endblock %}
