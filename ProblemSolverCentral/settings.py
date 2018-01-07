@@ -117,24 +117,23 @@ WSGI_APPLICATION = 'ProblemSolverCentral.wsgi.application'
 
 # Update database configuration with $DATABASE_URL.
 DATABASE_URL = 'postgres://tvubmxuaunzvfl:nPz9XaNTJZinozDa4LzSJWU2o0@ec2-23-21-71-9.compute-1.amazonaws.com:5432/d67bfm9t83a0fk'
-# import dj_database_url
-# DATABASES = {'default': dj_database_url.config(
-#     default='postgres://tvubmxuaunzvfl:nPz9XaNTJZinozDa4LzSJWU2o0@ec2-23-21-71-9.compute-1.amazonaws.com:5432/d67bfm9t83a0fk',
-#     engine='django.db.backends.postgresql_psycopg2'
-#     )}
-
+import dj_database_url
+DATABASES = {'default': dj_database_url.config(
+    default='postgres://tvubmxuaunzvfl:nPz9XaNTJZinozDa4LzSJWU2o0@ec2-23-21-71-9.compute-1.amazonaws.com:5432/d67bfm9t83a0fk',
+    engine='django.db.backends.postgresql_psycopg2'
+    )}
 # local database settings
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'problem_solver',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'problem_solver',
+#        'USER': 'postgres',
+#        'PASSWORD': 'password',
+#        'HOST': '127.0.0.1',
+#        'PORT': '5432',
+#    }
+#}
 
 # dreamhost database settings
 # DATABASES = {
@@ -189,11 +188,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'uploaded_media')
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # STATIC_URL = '/static/'
 
-STATIC_URL = '/static/'
+#STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+#STATICFILES_DIRS = (
+#    os.path.join(BASE_DIR, 'static'),
+#)
 AUTHENTICATION_BACKENDS = (
 
     'django.contrib.auth.backends.ModelBackend',
@@ -226,3 +225,14 @@ EMAIL_HOST_USER = 'problemsolvercentral@gmail.com'
 EMAIL_HOST_PASSWORD = 'Pakistan12.'
 EMAIL_PORT = 587
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
